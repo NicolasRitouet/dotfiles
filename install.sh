@@ -26,8 +26,16 @@ main() {
 		copyBashrc
 	fi
 
+	# Install GIT
+	if git --version &>/dev/null; then
+		read -p "Do you wish to install GIT (y/n)?
+		if [ $REPLY == "y" ]; then
+			installGit
+		fi
+	fi
+
 	# Copy .gitconfig ?
-	read -p "Do you wish to copy gitconfig? (y/n)?"
+	read -p "Do you wish to copy gitconfig (y/n)?"
 	if [ $REPLY == "y" ]; then
 		copyGitconfig
 	fi
@@ -46,17 +54,24 @@ main() {
 
 }
 
+installGit() {
+
+
+}
+
 copyBashrc() {
 
-	mv "${HOME}/.bashrc" "${HOME}/.bashrc.backup"
-	cp ".bashrc" "${HOME}/.bashrc"
+	cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
+	echo ".bashrc file backup as .bashrc.backup"
+	cp .bashrc ${HOME}/.bashrc
 	happy_print "Copy of .bashrc" "successful"
 }
 
 copyGitconfig() {
 
-	mv "${HOME}/.gitconfig" "${HOME}/.gitconfig.backup"
-	cp ".gitconfig" "${HOME}/.gitconfig"
+	cp ${HOME}/.gitconfig ${HOME}/.gitconfig.backup
+	echo ".gitconfig file backup as .gitconfig.backup"
+	cp .gitconfig ${HOME}/.gitconfig
 	happy_print "Copy of .gitconfig" "successful"
 }
 
