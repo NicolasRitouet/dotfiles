@@ -1,0 +1,6 @@
+[color]
+	ui = auto
+[alias]
+	last = log --oneline -n 1
+	cp = cherry-pick
+	hist = log --oneline --graph --decorate --all
