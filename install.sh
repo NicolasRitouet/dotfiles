@@ -20,6 +20,17 @@ main() {
 	echo "\!/ WIP \!/"
 	echo "Script to install a Dev environment on a fresh Linux box."
 
+	# Copy .bashrc ?
+	read -p "Do you wish to copy bashrc? (y/n)?"
+	if [ $REPLY == "y" ]; then
+		copyBashrc
+	fi
+
+	# Copy .gitconfig ?
+	read -p "Do you wish to copy gitconfig? (y/n)?"
+	if [ $REPLY == "y" ]; then
+		copyGitconfig
+	fi
 
 	# Install Sublime-text2 ?
 	read -p "Do you wish to install Sublime-text2 (y/n)?"
@@ -33,17 +44,6 @@ main() {
 		copySublimeDotFiles
 	fi
 
-	# Copy .bashrc ?
-	read -p "Do you wish to copy bashrc? (y/n)?"
-	if [ $REPLY == "y" ]; then
-		copyBashrc
-	fi
-
-	# Copy .gitconfig ?
-	read -p "Do you wish to copy gitconfig? (y/n)?"
-	if [ $REPLY == "y" ]; then
-		copyGitconfig
-	fi
 }
 
 copyBashrc() {
@@ -63,14 +63,14 @@ copyGitconfig() {
 
 
 copySublimeDotFiles() {
+	echo "Work in progress, try again later !"
+	#mv "$sublime_dir/User" "$sublime_dir/User.backup"
+	#cd "$sublime_dir"
+	#echo "Installing Soda Theme..."
+	#git clone https://github.com/buymeasoda/soda-theme/ "Theme - Soda"
 
-	mv "$sublime_dir/User" "$sublime_dir/User.backup"
-	cd "$sublime_dir"
-	echo "Installing Soda Theme..."
-	git clone https://github.com/buymeasoda/soda-theme/ "Theme - Soda"
-
-	rm -rf $ZSH/sublime2/User
-	cp -R ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User $ZSH/sublime2/User
+	#rm -rf $ZSH/sublime2/User
+	#cp -R ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User $ZSH/sublime2/User
 
 }
 
