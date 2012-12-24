@@ -6,7 +6,7 @@ set +x
 script_name="install_dotfiles"
 sublime_dir=~/Library/Application\ Support/Sublime\ Text\ 2/Packages
 
-# Must run as root so that we can shutdown backuppc and mount drives 
+# Must run as root so that we can install packages
 #if [ $(whoami) != "root" ]; then
 #	echo "You need to run this script as root."
 #	echo "Use 'sudo ./$script_name' then enter your password when prompted."
@@ -15,23 +15,29 @@ sublime_dir=~/Library/Application\ Support/Sublime\ Text\ 2/Packages
 
 main() {
 
-
-
 	echo "\!/ WIP \!/"
 	echo "Script to install a Dev environment on a fresh Linux box."
+	
 
+	# Install GIT
+	if git --version &>/dev/null; then
+		echo "Git is needed to clone the dotfiles repository, Git will install now."
+		#read -p "Do you wish to install GIT (y/n)?"
+		#if [ $REPLY == "y" ]; then
+			installGit
+		#fi
+	else
+		echo "GIT already installed"
+	fi
+
+	# clone this rep
+	git clone git://github.com/NicolasRTT/dotfiles.git
+	cd dotfiles
+	
 	# Copy .bashrc ?
 	read -p "Do you wish to copy bashrc? (y/n)?"
 	if [ $REPLY == "y" ]; then
 		copyBashrc
-	fi
-
-	# Install GIT
-	if git --version &>/dev/null; then
-		read -p "Do you wish to install GIT (y/n)?"
-		if [ $REPLY == "y" ]; then
-			installGit
-		fi
 	fi
 
 	# Copy .gitconfig ?
