@@ -67,7 +67,7 @@ main() {
 }
 
 installGit() {
-	sudo apt-get install -y git
+	sudo apt-get install -y git-core
 	happy_print "Install of GIT" "successful"
 }
 
