@@ -20,7 +20,7 @@ main() {
 	
 
 	# Install GIT
-	if git --version &>/dev/null; then
+	if git --version 2>&1 >/dev/null ; then
 		echo "Git is needed to clone the dotfiles repository, Git will install now."
 		#read -p "Do you wish to install GIT (y/n)?"
 		#if [ $REPLY == "y" ]; then
