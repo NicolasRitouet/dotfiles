@@ -21,13 +21,13 @@ main() {
 
 	# Install GIT
 	if git --version &> /dev/null ; then
+		echo "GIT already installed"
+	else
 		echo "Git is needed to clone the dotfiles repository, Git will install now."
 		#read -p "Do you wish to install GIT (y/n)?"
 		#if [ $REPLY == "y" ]; then
 			installGit
 		#fi
-	else
-		echo "GIT already installed"
 	fi
 
 	# clone this rep
