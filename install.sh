@@ -65,6 +65,9 @@ main() {
 		copySublimeDotFiles
 	fi
 
+	# reload bash
+	source ~/.bashrc
+
 }
 
 installGit() {
