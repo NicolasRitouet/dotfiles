@@ -1,0 +1,5 @@
+[
+	{ "keys": ["ctrl+shift+down"], "command": "duplicate_line" },
+	{ "keys": ["ctrl+ö"], "command": "show_panel", "args": {"panel": "console", "toggle": true} },
+	{ "keys": ["ctrl+d"], "command": "run_macro_file", "args": {"file": "Packages/Default/Delete Line.sublime-macro"} }
+]
