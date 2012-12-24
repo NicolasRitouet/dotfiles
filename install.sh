@@ -39,6 +39,12 @@ main() {
 	if [ $REPLY == "y" ]; then
 		copyBashrc
 	fi
+	
+	# Copy .bash_aliases ?
+	read -p "Do you wish to copy bash_aliases? (y/n)?"
+	if [ $REPLY == "y" ]; then
+		copyBashAliases
+	fi
 
 	# Copy .gitconfig ?
 	read -p "Do you wish to copy gitconfig (y/n)?"
@@ -65,6 +71,14 @@ installGit() {
 	happy_print "Install of GIT" "successful"
 }
 
+copyBashAliases() {
+
+	cp ${HOME}/.bash_aliases ${HOME}/.bash_aliases.backup
+	echo ".bash_aliases file backup as .bash_aliases.backup"
+	cp .bash_aliases ${HOME}/.bash_aliases
+	happy_print "Copy of .bash_aliases" "successful"
+
+}
 copyBashrc() {
 
 	cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
