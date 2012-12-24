@@ -3,21 +3,22 @@
 # Debug off (-x to enable debug)
 set +x
 
-script_name="install_dotfiles"
+script_name="install.sh"
 sublime_dir=~/Library/Application\ Support/Sublime\ Text\ 2/Packages
 
 # Must run as root so that we can install packages
-#if [ $(whoami) != "root" ]; then
-#	echo "You need to run this script as root."
-#	echo "Use 'sudo ./$script_name' then enter your password when prompted."
-#	exit 1
-#fi
+if [ $(whoami) != "root" ]; then
+	echo "You need to run this script as root."
+	echo "Use 'sudo ./$script_name' then enter your password when prompted."
+	exit 1
+fi
 
 main() {
 
 	echo "\!/ WIP \!/"
 	echo "Script to install a Dev environment on a fresh Linux box."
 	
+	sudo apt-get update
 
 	# Install GIT
 	if git --version &> /dev/null ; then
