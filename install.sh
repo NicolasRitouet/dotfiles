@@ -28,7 +28,7 @@ main() {
 
 	# Install GIT
 	if git --version &>/dev/null; then
-		read -p "Do you wish to install GIT (y/n)?
+		read -p "Do you wish to install GIT (y/n)?"
 		if [ $REPLY == "y" ]; then
 			installGit
 		fi
@@ -55,8 +55,8 @@ main() {
 }
 
 installGit() {
-
-
+	sudo apt-get install -y git
+	happy_print "Install of GIT" "successful"
 }
 
 copyBashrc() {
