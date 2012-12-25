@@ -105,7 +105,7 @@ main() {
 	echo -n "Do you wish to restart SSHd? (Y/n)?"
 	read -e RESTART_SSHD
 	if [ "$RESTART_SSHD" != "n" ]; then
-		/etc/init.d/ssh restart
+		service ssh restart
 	fi
 
 	# reload bash
