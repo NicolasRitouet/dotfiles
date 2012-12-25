@@ -58,10 +58,6 @@ main() {
 		fi
 	fi
 
-	# clone this rep
-	# git clone git://github.com/NicolasRTT/dotfiles.git
-	cd dotfiles
-	
 	# Copy .bashrc ?
 	echo -n "Do you wish to copy bashrc? (Y/n)?"
 	read -e COPY_BASHRC
