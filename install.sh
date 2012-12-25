@@ -34,14 +34,16 @@ main() {
 	fi
 	
 	# Create a user ?
-	read -p "Do you wish to create a user? (Y/n)?"
-	if [ $REPLY != "n" ]; then
+	echo -n "Do you wish to create a user? (Y/n)?"
+	read -e CREATE_USER
+	if [ "$CREATE_USER" != "n" ]; then
 		configure_user
 	fi
 	
 	# Disable ROOT ?
-	read -p "Do you wish to disable root? (Y/n)?"
-	if [ $REPLY != "n" ]; then
+	echo -n "Do you wish to disable root? (Y/n)?"
+	read -e DISABLE_ROOT
+	if [ "$DISABLE_ROOT" != "n" ]; then
 		configure_sshroot
 	fi
 
@@ -49,43 +51,49 @@ main() {
 	if git --version &> /dev/null ; then
 		echo "GIT already installed"
 	else
-		read -p "Git is needed to clone the dotfiles Rep, do you wish to install GIT (Y/n)?"
-		if [ $REPLY != "n" ]; then
+		echo -n "Git is needed to clone the dotfiles Rep, do you wish to install GIT (Y/n)?"
+		read -e INSTALL_GIT
+		if [ "$INSTALL_GIT" != "n" ]; then
 			installGit
 		fi
 	fi
 
 	# clone this rep
-	git clone git://github.com/NicolasRTT/dotfiles.git
+	# git clone git://github.com/NicolasRTT/dotfiles.git
 	cd dotfiles
 	
 	# Copy .bashrc ?
-	read -p "Do you wish to copy bashrc? (Y/n)?"
-	if [ $REPLY != "n" ]; then
+	echo -n "Do you wish to copy bashrc? (Y/n)?"
+	read -e COPY_BASHRC
+	if [ "$COPY_BASHRC" != "n" ]; then
 		copyBashrc
 	fi
 	
 	# Copy .bash_aliases ?
-	read -p "Do you wish to copy bash_aliases? (Y/n)?"
-	if [ $REPLY != "n" ]; then
+	echo -n "Do you wish to copy bash_aliases? (Y/n)?"
+	read -e COPY_BASH_ALIASES
+	if [ "$COPY_BASH_ALIASES" != "n" ]; then
 		copyBashAliases
 	fi
 
 	# Copy .gitconfig ?
-	read -p "Do you wish to copy gitconfig (Y/n)?"
-	if [ $REPLY != "n" ]; then
+	echo -n "Do you wish to copy gitconfig (Y/n)?"
+	read -e COPY_GITCONFIG
+	if [ "$COPY_GITCONFIG" != "n" ]; then
 		copyGitconfig
 	fi
 
 	# Install Sublime-text2 ?
-	read -p "Do you wish to install Sublime-text2 (Y/n)?"
-	if [ $REPLY != "n" ]; then
+	echo -n "Do you wish to install Sublime-text2 (Y/n)?"
+	read -e INSTALL_SUBLIME
+	if [ "$INSTALL_SUBLIME" != "n" ]; then
 		installSublimeText
 	fi
 
 	# Copy sublime-text2 dotfiles ?
-	read -p "Do you wish to copy Sublime-text2 dotfiles from Github? (Y/n)?"
-	if [ $REPLY != "n" ]; then
+	echo -n "Do you wish to copy Sublime-text2 dotfiles from Github? (Y/n)?"
+	read -e COPY_SUBLIME_CONF
+	if [ "$COPY_SUBLIME_CONF" != "n" ]; then
 		copySublimeDotFiles
 	fi
 
