@@ -59,6 +59,8 @@ alias path='echo -e ${PATH//:/\\n}'
 # Search in history
 alias h='history | grep '
 
+alias install='sudo apt-get install '
+
 
 ##################
 # User defined functions
