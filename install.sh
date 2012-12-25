@@ -15,7 +15,6 @@ fi
 
 main() {
 
-	echo "\!/ Work In Progress \!/"
 	echo "Script to install a Dev environment on a fresh Linux box."
 	
 	# If debian, update and upgrade
@@ -26,18 +25,30 @@ main() {
 		sudo apt-get update > /dev/null
 
 		# upgrade ?
-		read -p "Do you wish to upgrade your Debian? (y/n)?"
-		if [ $REPLY == "y" ]; then
+		read -p "Do you wish to upgrade your Debian? (Y/n)?"
+		if [ $REPLY != "n" ]; then
 			sudo apt-get upgrade -y > /dev/null
 		fi
+	fi
+	
+	# Create a user ?
+	read -p "Do you wish to create a user? (Y/n)?"
+	if [ $REPLY != "n" ]; then
+		configure_user
+	fi
+	
+	# Disable ROOT ?
+	read -p "Do you wish to disable root? (Y/n)?"
+	if [ $REPLY != "n" ]; then
+		configure_sshroot
 	fi
 
 	# Install GIT
 	if git --version &> /dev/null ; then
 		echo "GIT already installed"
 	else
-		read -p "Git is needed to clone the dotfiles Rep, do you wish to install GIT (y/n)?"
-		if [ $REPLY == "y" ]; then
+		read -p "Git is needed to clone the dotfiles Rep, do you wish to install GIT (Y/n)?"
+		if [ $REPLY != "n" ]; then
 			installGit
 		fi
 	fi
@@ -47,38 +58,61 @@ main() {
 	cd dotfiles
 	
 	# Copy .bashrc ?
-	read -p "Do you wish to copy bashrc? (y/n)?"
-	if [ $REPLY == "y" ]; then
+	read -p "Do you wish to copy bashrc? (Y/n)?"
+	if [ $REPLY != "n" ]; then
 		copyBashrc
 	fi
 	
 	# Copy .bash_aliases ?
-	read -p "Do you wish to copy bash_aliases? (y/n)?"
-	if [ $REPLY == "y" ]; then
+	read -p "Do you wish to copy bash_aliases? (Y/n)?"
+	if [ $REPLY != "n" ]; then
 		copyBashAliases
 	fi
 
 	# Copy .gitconfig ?
-	read -p "Do you wish to copy gitconfig (y/n)?"
-	if [ $REPLY == "y" ]; then
+	read -p "Do you wish to copy gitconfig (Y/n)?"
+	if [ $REPLY != "n" ]; then
 		copyGitconfig
 	fi
 
 	# Install Sublime-text2 ?
-	read -p "Do you wish to install Sublime-text2 (y/n)?"
-	if [ $REPLY == "y" ]; then
+	read -p "Do you wish to install Sublime-text2 (Y/n)?"
+	if [ $REPLY != "n" ]; then
 		installSublimeText
 	fi
 
 	# Copy sublime-text2 dotfiles ?
-	read -p "Do you wish to copy Sublime-text2 dotfiles from Github? (y/n)?"
-	if [ $REPLY == "y" ]; then
+	read -p "Do you wish to copy Sublime-text2 dotfiles from Github? (Y/n)?"
+	if [ $REPLY != "n" ]; then
 		copySublimeDotFiles
 	fi
 
 	# reload bash
 	exec bash
 
+}
+
+
+
+# Add User Account
+configure_user() {
+	echo \>\> Configuring: User Account
+	# Take User Input
+	echo -n "Please enter a user name: "
+	read -e USERNAME
+	# Add User Based On Input
+	useradd -m -s /bin/bash $USERNAME
+	# Set Password For Newly Added User
+	passwd $USERNAME
+}
+
+# Disable Root SSH Login
+configure_sshroot() {
+	echo \>\> Configuring: Disabling Root SSH Login
+	# Disable Root SSH Login For OpenSSH
+	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+	# Disable Root SSH Login For Dropbear
+	sed -i 's/DROPBEAR_EXTRA_ARGS="/DROPBEAR_EXTRA_ARGS="-w/g' /etc/default/dropbear
 }
 
 installGit() {
