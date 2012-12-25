@@ -20,5 +20,5 @@ Run this:
 ## Session Duration install
 Run this:
 
-    wget https://raw.github.com/NicolasRTT/dotfiles/master/.bash_aliases
-    . ./.bash_aliases
+    wget -O temp_aliases https://raw.github.com/NicolasRTT/dotfiles/master/.bash_aliases
+    . ./temp_aliases
