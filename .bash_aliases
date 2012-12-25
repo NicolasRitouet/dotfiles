@@ -64,7 +64,7 @@ alias h='history | grep '
 # User defined functions
 ##################
 # Extract all kinds of compressed files
-ex () {
+extract () {
     if [ -f $1 ] ; then
         case $1 in
             *.tar.bz2)   tar xjf $1        ;;
