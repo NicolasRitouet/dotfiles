@@ -126,6 +126,7 @@ configure_user() {
 	useradd -m -s /bin/bash $USERNAME
 	# Set Password For Newly Added User
 	passwd $USERNAME
+	sudo echo '$USERNAME ALL=(ALL:ALL) ALL' >> /etc/sudoers
 }
 
 # Disable Root SSH Login
