@@ -1,9 +1,9 @@
-Just some personnal files, move along ...
-
+# Setup a fresh linux box
 
 # Todo
-- add alias in .bashrc (ll, etc...)
-- Correctly copy sublime prefs
+- improve prompt
+- Correctly copy sublime prefs (all files)
+- put files in separate directories
 - install chrome
 - install Vert.x
 - install Node.js
@@ -12,7 +12,6 @@ Just some personnal files, move along ...
 # Install
 Run this:
 
-    git clone git://github.com/NicolasRTT/dotfiles.git ~/.dotfiles
-    cd ~/.dotfiles
+    wget https://raw.github.com/NicolasRTT/dotfiles/master/install.sh
     chmod +x install.sh
-    ./install.sh
+    sudo ./install.sh
