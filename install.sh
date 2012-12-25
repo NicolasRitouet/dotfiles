@@ -20,13 +20,15 @@ main() {
 	# If debian, update and upgrade
 	if [ -f /etc/debian_version ]; then
 		echo "This script will firstly update your apt-get"
-		read -p "Press any touch to continue ..." -n1 -s
+		echo -n "Press any touch to continue ..."
+		read -e NOTHING
 
 		sudo apt-get update > /dev/null
 
 		# upgrade ?
-		read -p "Do you wish to upgrade your Debian? (Y/n)?"
-		if [ $REPLY != "n" ]; then
+		echo -n "Do you wish to upgrade your Debian? (Y/n)?"
+		read -e UPGRADE
+		if [ "$UPGRADE" != "n" ]; then
 			sudo apt-get upgrade -y > /dev/null
 		fi
 	fi
