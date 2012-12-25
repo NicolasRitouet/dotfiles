@@ -119,8 +119,6 @@ configure_sshroot() {
 	echo \>\> Configuring: Disabling Root SSH Login
 	# Disable Root SSH Login For OpenSSH
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-	# Remove All Home Files
-	rm -rf ~/*
 }
 
 installGit() {
