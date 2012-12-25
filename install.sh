@@ -25,10 +25,10 @@ main() {
 		echo "GIT already installed"
 	else
 		echo "Git is needed to clone the dotfiles repository, Git will install now."
-		#read -p "Do you wish to install GIT (y/n)?"
-		#if [ $REPLY == "y" ]; then
+		read -p "Git is needed to clone the dotfiles Rep, do you wish to install GIT (y/n)?"
+		if [ $REPLY == "y" ]; then
 			installGit
-		#fi
+		fi
 	fi
 
 	# clone this rep
