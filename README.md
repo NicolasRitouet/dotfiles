@@ -12,9 +12,7 @@
 ## Install
 Run this:
 
-    wget https://raw.github.com/NicolasRTT/dotfiles/master/install.sh
-    chmod +x install.sh
-    sudo ./install.sh
+    wget -O install.tar.gz http://github.com/NicolasRTT/dotfiles/tarball/master; tar zxvf *.gz; cd *dotfiles*; ./install.sh
 
 
 ## Session Duration install
