@@ -18,7 +18,7 @@ main() {
 	echo "\!/ Work In Progress \!/"
 	echo "Script to install a Dev environment on a fresh Linux box."
 	echo "This script will firstly update your apt-get"
-	read -p "Press any touch to continue ..."	
+	read -p "Press any touch to continue ..." -n1 -s
 
 	sudo apt-get update
 
