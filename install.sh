@@ -23,12 +23,12 @@ main() {
 		echo "This script will firstly update your apt-get"
 		read -p "Press any touch to continue ..." -n1 -s
 
-		sudo apt-get update
+		sudo apt-get update > /dev/null
 
 		# upgrade ?
 		read -p "Do you wish to upgrade your Debian? (y/n)?"
 		if [ $REPLY == "y" ]; then
-			sudo apt-get upgrade -y
+			sudo apt-get upgrade -y > /dev/null
 		fi
 	fi
 
@@ -82,8 +82,9 @@ main() {
 }
 
 installGit() {
-	sudo apt-get install -y git-core
-	happy_print "Install of GIT" "successful"
+	sudo apt-get install -y 
+	sudo apt-get install --force-yes --yes git-core > /dev/null 2>&1 ;
+	quitOnError "Installing git-core now"
 }
 
 copyBashAliases() {
@@ -129,8 +130,9 @@ installSublimeText() {
 
 	sudo apt-get install -y python-software-properties
 	sudo add-apt-repository ppa:webupd8team/sublime-text-2
-	sudo apt-get update
-	sudo apt-get install sublime-text
+	sudo apt-get update > /dev/null
+	sudo apt-get install --force-yes --yes sublime-text > /dev/null 2>&1 ;
+	quitOnError "Installing sublime-text now"
 	happy_print "Install of sublime-text2" "successful"
 }
 
@@ -138,6 +140,16 @@ installSublimeText() {
 #---------------------------------------------
 # UTILITY METHODS
 #---------------------------------------------
+function quitOnError {
+   if [ $? -gt 0 ]
+   then
+     sad_print "\n\n $@ ..." "FAIL"
+     exit 10
+   else
+     happy_print "$@ ..." "Successful!"
+   fi
+}
+
 # Thanks Yeoman for these beautiful prints :)
 
 # Print all in green and the ✔ and $1 in bold
