@@ -40,6 +40,12 @@ alias vi=vim
 # do not delete / or prompt if deleting more than 3 files at a time #
 alias rm='rm -I --preserve-root'
 
+# This is GOLD for finding out what is taking so much space on your drives!
+alias diskspace="du -S | sort -n -r |more"
+
+# Show me the size (sorted) of only the folders in this directory
+alias folders="find . -maxdepth 1 -type d -print | xargs du -sk | sort -rn"
+
 ## pass options to free ## 
 alias meminfo='free -m -l -t'
 
