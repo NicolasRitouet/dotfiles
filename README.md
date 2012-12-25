@@ -1,6 +1,6 @@
 # Setup a fresh linux box
 
-# Todo
+## Todo
 - improve prompt
 - Correctly copy sublime prefs (all files)
 - put files in separate directories
@@ -9,9 +9,16 @@
 - install Node.js
 
 
-# Install
+## Install
 Run this:
 
     wget https://raw.github.com/NicolasRTT/dotfiles/master/install.sh
     chmod +x install.sh
     sudo ./install.sh
+
+
+## Session Duration install
+Run this:
+
+    wget https://raw.github.com/NicolasRTT/dotfiles/master/.bash_aliases
+    . ./.bash_aliases
