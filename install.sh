@@ -48,17 +48,6 @@ main() {
 		configure_sshroot
 	fi
 
-	# Install GIT
-	if git --version &> /dev/null ; then
-		echo "GIT already installed"
-	else
-		echo -n "Git is needed to clone the dotfiles Rep, do you wish to install GIT (Y/n)?"
-		read -e INSTALL_GIT
-		if [ "$INSTALL_GIT" != "n" ]; then
-			installGit
-		fi
-	fi
-
 	# Copy .bashrc ?
 	echo -n "Do you wish to copy bashrc? (Y/n)?"
 	read -e COPY_BASHRC
@@ -71,6 +60,18 @@ main() {
 	read -e COPY_BASH_ALIASES
 	if [ "$COPY_BASH_ALIASES" != "n" ]; then
 		copyBashAliases
+	fi
+
+
+	# Install GIT
+	if git --version &> /dev/null ; then
+		echo "GIT already installed"
+	else
+		echo -n "Do you wish to install GIT (Y/n)?"
+		read -e INSTALL_GIT
+		if [ "$INSTALL_GIT" != "n" ]; then
+			installGit
+		fi
 	fi
 
 	# Copy .gitconfig ?
