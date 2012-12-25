@@ -82,6 +82,7 @@ main() {
 }
 
 installGit() {
+
 	sudo apt-get install --force-yes --yes git-core > /dev/null 2>&1 ;
 	quitOnError "Installing git-core now"
 }
@@ -127,7 +128,8 @@ copySublimeDotFiles() {
 
 installSublimeText() {
 
-	sudo apt-get install -y python-software-properties
+	sudo apt-get install --force-yes --yes python-software-properties > /dev/null 2>&1 ;
+	quitOnError "Installing python-software-properties now"
 	sudo add-apt-repository ppa:webupd8team/sublime-text-2
 	sudo apt-get update > /dev/null
 	sudo apt-get install --force-yes --yes sublime-text > /dev/null 2>&1 ;
@@ -139,16 +141,14 @@ installSublimeText() {
 # UTILITY METHODS
 #---------------------------------------------
 function quitOnError {
-   if [ $? -gt 0 ]
-   then
-     sad_print "\n\n $@ ..." "FAIL"
-     exit 10
-   else
-     happy_print "$@ ..." "Successful!"
-   fi
+	if [ $? -gt 0 ]	
+	then
+		sad_print "\n\n $@ ..." "FAIL"
+		exit 10
+	else
+		happy_print "$@ ..." "Successful!"
+	fi
 }
-
-# Thanks Yeoman for these beautiful prints :)
 
 # Print all in green and the ✔ and $1 in bold
 happy_print() {
