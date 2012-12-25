@@ -15,10 +15,18 @@ fi
 
 main() {
 
-	echo "\!/ WIP \!/"
+	echo "\!/ Work In Progress \!/"
 	echo "Script to install a Dev environment on a fresh Linux box."
-	
+	echo "This script will firstly update your apt-get"
+	read -p "Press any touch to continue ..."	
+
 	sudo apt-get update
+
+	# upgrade ?
+	read -p "Do you wish to upgrade your Debian? (y/n)?"
+	if [ $REPLY == "y" ]; then
+		sudo apt-get upgrade
+	fi
 
 	# Install GIT
 	if git --version &> /dev/null ; then
