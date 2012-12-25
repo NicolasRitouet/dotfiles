@@ -82,7 +82,6 @@ main() {
 }
 
 installGit() {
-	sudo apt-get install -y 
 	sudo apt-get install --force-yes --yes git-core > /dev/null 2>&1 ;
 	quitOnError "Installing git-core now"
 }
@@ -133,7 +132,6 @@ installSublimeText() {
 	sudo apt-get update > /dev/null
 	sudo apt-get install --force-yes --yes sublime-text > /dev/null 2>&1 ;
 	quitOnError "Installing sublime-text now"
-	happy_print "Install of sublime-text2" "successful"
 }
 
 
