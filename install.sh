@@ -231,6 +231,11 @@ function quitOnError {
 	fi
 }
 
+# Print extra descriptions for failure
+desc_print() {
+    echo -e "      * $1 [0;35m$2[0m $3"
+}
+
 # Print all in green and the ✔ and $1 in bold
 happy_print() {
     echo -e "   [1;32m✔ $1[0;32m $2[0m"
