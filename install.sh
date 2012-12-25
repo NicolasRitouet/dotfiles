@@ -94,6 +94,20 @@ main() {
 		copySublimeDotFiles
 	fi
 
+	# Clean /root ?
+	echo -n "Do you wish to remove all /root files? (Y/n)?"
+	read -e REMOVE_HOME
+	if [ "$REMOVE_HOME" != "n" ]; then
+		rm -rf ~/*
+	fi
+
+	# Restart SSHd ?
+	echo -n "Do you wish to restart SSHd? (Y/n)?"
+	read -e RESTART_SSHD
+	if [ "$RESTART_SSHD" != "n" ]; then
+		/etc/init.d/ssh restart
+	fi
+
 	# reload bash
 	exec bash
 
