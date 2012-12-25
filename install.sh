@@ -73,7 +73,7 @@ main() {
 	fi
 
 	# reload bash
-	source ~/.bashrc
+	exec bash
 
 }
 
