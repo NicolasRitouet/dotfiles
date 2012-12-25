@@ -25,7 +25,7 @@ main() {
 	# upgrade ?
 	read -p "Do you wish to upgrade your Debian? (y/n)?"
 	if [ $REPLY == "y" ]; then
-		sudo apt-get upgrade
+		sudo apt-get upgrade -y
 	fi
 
 	# Install GIT
