@@ -95,6 +95,13 @@ main() {
 		copySublimeDotFiles
 	fi
 
+	# Install extra?
+	echo -n "Do you wish to install the extra? (Y/n)?"
+	read -e INSTALL_EXTRA
+	if [ "$INSTALL_EXTRA" != "n" ]; then
+		install_extra
+	fi
+
 	# Clean /root ?
 	echo -n "Do you wish to remove all /root files? (Y/n)?"
 	read -e REMOVE_HOME
@@ -114,7 +121,16 @@ main() {
 
 }
 
-
+# Install Extra Packages Defined In List
+install_extra() {
+	# Loop Through Package List
+	while read package; do
+		# Install Currently Selected Package
+		apt-get -q -y install $package
+	done < extra
+	# Clean Cached Packages
+	apt-get clean
+}
 
 # Add User Account
 configure_user() {
