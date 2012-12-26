@@ -235,7 +235,7 @@ desc_print() {
 }
 
 ask() {
-	echo -e -n "   [1;32m☆$1[0m"    
+	echo -e -n "   [1;32m☆ $1 [0m"    
 }
 
 # Print all in green and the ✔ and $1 in bold
