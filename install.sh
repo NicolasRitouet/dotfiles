@@ -63,7 +63,7 @@ main() {
 
 	# Install GIT
 	if git --version &> /dev/null ; then
-		happy_print "GIT already installed"
+		happy_print "\n GIT already installed"
 	else
 		ask "Do you wish to install GIT (Y/n)?"
 		read -e INSTALL_GIT
