@@ -163,11 +163,11 @@ installGit() {
 copyBashAliases() {
 		
 	desc_print "Copy .bash_aliases"
-	cp ${HOME}/.bash_aliases ${HOME}/.bash_aliases.backup
-	desc_print ".bash_aliases file backup as .bash_aliases.backup"
-	if [ -f .bash_aliases ]; then
-		cp .bash_aliases ${HOME}/.bash_aliases
+	if [ -f ${HOME}/.bash_aliases ]; then
+		cp ${HOME}/.bash_aliases ${HOME}/.bash_aliases.backup
+		desc_print ".bash_aliases file backup as .bash_aliases.backup"
 	fi
+	cp .bash_aliases ${HOME}/.bash_aliases
 	if [ "$username" != "root" ]; then
 		cp .bash_aliases /home/$username/.bash_aliases
 	fi
@@ -177,12 +177,11 @@ copyBashAliases() {
 copyBashrc() {
 
 	desc_print "copy .bashrc"
-
-	cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
-	desc_print ".bashrc file backup as .bashrc.backup"
-	if [ -f .bashrc ]; then
-		cp .bashrc ${HOME}/.bashrc
+	if [ -f ${HOME}/.bashrc ]; then
+		cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
+		desc_print ".bashrc file backup as .bashrc.backup"
 	fi
+	cp .bashrc ${HOME}/.bashrc
 	if [ "$username" != "root" ]; then
 		cp .bashrc /home/$username/.bashrc
 	fi
@@ -192,11 +191,11 @@ copyBashrc() {
 copyGitconfig() {
 
 	desc_print "copy .gitconfig"
-	cp ${HOME}/.gitconfig ${HOME}/.gitconfig.backup
-	desc_print ".gitconfig file backup as .gitconfig.backup"
-	if [ -f .gitconfig ]; then
-		cp .gitconfig ${HOME}/.gitconfig
+	if [ -f ${HOME}/.gitconfig ]; then
+		cp ${HOME}/.gitconfig ${HOME}/.gitconfig.backup
+		desc_print ".gitconfig file backup as .gitconfig.backup"
 	fi
+	cp .gitconfig ${HOME}/.gitconfig
 	if [ "$username" != "root" ]; then
 		cp .gitconfig /home/$username/.gitconfig
 	fi
