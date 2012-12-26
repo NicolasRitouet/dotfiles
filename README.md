@@ -1,6 +1,7 @@
 # Setup a fresh linux box
 
 ## Todo
+- Rollback if password error while creating a user
 - improve prompt
 - Correctly copy sublime prefs (all files)
 - put files in separate directories
