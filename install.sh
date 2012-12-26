@@ -164,7 +164,9 @@ copyBashAliases() {
 	desc_print "Copy .bash_aliases"
 	cp ${HOME}/.bash_aliases ${HOME}/.bash_aliases.backup
 	desc_print ".bash_aliases file backup as .bash_aliases.backup"
-	cp .bash_aliases ${HOME}/.bash_aliases
+	if [ -f .bash_aliases ]; then
+		cp .bash_aliases ${HOME}/.bash_aliases
+	fi
 	if [ "$username" != "root" ]; then
 		cp .bash_aliases /home/$username/.bash_aliases
 	fi
@@ -177,7 +179,9 @@ copyBashrc() {
 
 	cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
 	desc_print ".bashrc file backup as .bashrc.backup"
-	cp .bashrc ${HOME}/.bashrc
+	if [ -f .bashrc ]; then
+		cp .bashrc ${HOME}/.bashrc
+	fi
 	if [ "$username" != "root" ]; then
 		cp .bashrc /home/$username/.bashrc
 	fi
@@ -189,7 +193,9 @@ copyGitconfig() {
 	desc_print "copy .gitconfig"
 	cp ${HOME}/.gitconfig ${HOME}/.gitconfig.backup
 	desc_print ".gitconfig file backup as .gitconfig.backup"
-	cp .gitconfig ${HOME}/.gitconfig
+	if [ -f .gitconfig ]; then
+		cp .gitconfig ${HOME}/.gitconfig
+	fi
 	if [ "$username" != "root" ]; then
 		cp .gitconfig /home/$username/.gitconfig
 	fi
