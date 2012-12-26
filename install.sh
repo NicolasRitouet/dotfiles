@@ -9,25 +9,23 @@ username=$(whoami)
 
 # Must run as root so that we can install packages
 if [ $(whoami) != "root" ]; then
-	echo "You need to run this script as root."
-	echo "Use 'sudo ./$script_name' then enter your password when prompted."
+	echo -e "\n You need to run this script as root."
+	echo -e "\n Use 'sudo ./$script_name' then enter your password when prompted.\n "
 	exit 1
 fi
 
 main() {
 
-	echo "Script to install a Dev environment on a fresh Linux box."
+	echo -e "\n Script to install a Dev environment on a fresh Linux box.\n "
 	
 	# If debian, update and upgrade
 	if [ -f /etc/debian_version ]; then
 		echo "This script will firstly update your apt-get"
-		echo -n "Press any touch to continue ..."
-		read -e NOTHING
 
 		sudo apt-get update > /dev/null
 
 		# upgrade ?
-		echo -n "Do you wish to upgrade your Debian? (Y/n)?"
+		ask "Do you wish to upgrade your Debian? (Y/n)?"
 		read -e UPGRADE
 		if [ "$UPGRADE" != "n" ]; then
 			sudo apt-get upgrade -y > /dev/null
@@ -234,6 +232,10 @@ function quitOnError {
 # Print extra descriptions for failure
 desc_print() {
     echo -e "      * $1 [0;35m$2[0m $3"
+}
+
+ask() {
+	echo -e -n "   [1;32m☆ $1 "    
 }
 
 # Print all in green and the ✔ and $1 in bold
