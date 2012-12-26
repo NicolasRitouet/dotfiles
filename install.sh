@@ -33,28 +33,28 @@ main() {
 	fi
 	
 	# Create a user ?
-	echo -n "Do you wish to create a user? (Y/n)?"
+	ask "Do you wish to create a user? (Y/n)?"
 	read -e CREATE_USER
 	if [ "$CREATE_USER" != "n" ]; then
 		configure_user
 	fi
 	
 	# Disable ROOT ?
-	echo -n "Do you wish to disable root? (Y/n)?"
+	ask "Do you wish to disable root? (Y/n)?"
 	read -e DISABLE_ROOT
 	if [ "$DISABLE_ROOT" != "n" ]; then
 		configure_sshroot
 	fi
 
 	# Copy .bashrc ?
-	echo -n "Do you wish to copy bashrc? (Y/n)?"
+	ask "Do you wish to copy bashrc? (Y/n)?"
 	read -e COPY_BASHRC
 	if [ "$COPY_BASHRC" != "n" ]; then
 		copyBashrc
 	fi
 	
 	# Copy .bash_aliases ?
-	echo -n "Do you wish to copy bash_aliases? (Y/n)?"
+	ask "Do you wish to copy bash_aliases? (Y/n)?"
 	read -e COPY_BASH_ALIASES
 	if [ "$COPY_BASH_ALIASES" != "n" ]; then
 		copyBashAliases
@@ -65,7 +65,7 @@ main() {
 	if git --version &> /dev/null ; then
 		echo "GIT already installed"
 	else
-		echo -n "Do you wish to install GIT (Y/n)?"
+		ask "Do you wish to install GIT (Y/n)?"
 		read -e INSTALL_GIT
 		if [ "$INSTALL_GIT" != "n" ]; then
 			installGit
@@ -73,42 +73,42 @@ main() {
 	fi
 
 	# Copy .gitconfig ?
-	echo -n "Do you wish to copy gitconfig (Y/n)?"
+	ask "Do you wish to copy gitconfig (Y/n)?"
 	read -e COPY_GITCONFIG
 	if [ "$COPY_GITCONFIG" != "n" ]; then
 		copyGitconfig
 	fi
 
 	# Install Sublime-text2 ?
-	echo -n "Do you wish to install Sublime-text2 (Y/n)?"
+	ask "Do you wish to install Sublime-text2 (Y/n)?"
 	read -e INSTALL_SUBLIME
 	if [ "$INSTALL_SUBLIME" != "n" ]; then
 		installSublimeText
 	fi
 
 	# Copy sublime-text2 dotfiles ?
-	echo -n "Do you wish to copy Sublime-text2 dotfiles from Github? (Y/n)?"
+	ask "Do you wish to copy Sublime-text2 dotfiles from Github? (Y/n)?"
 	read -e COPY_SUBLIME_CONF
 	if [ "$COPY_SUBLIME_CONF" != "n" ]; then
 		copySublimeDotFiles
 	fi
 
 	# Install extra?
-	echo -n "Do you wish to install the extra? (Y/n)?"
+	ask "Do you wish to install the extra? (Y/n)?"
 	read -e INSTALL_EXTRA
 	if [ "$INSTALL_EXTRA" != "n" ]; then
 		install_extra
 	fi
 
 	# Clean /root ?
-	echo -n "Do you wish to remove all /root files? (Y/n)?"
+	ask "Do you wish to remove all /root files? (Y/n)?"
 	read -e REMOVE_HOME
 	if [ "$REMOVE_HOME" != "n" ]; then
 		rm -rf ~/*
 	fi
 
 	# Restart SSHd ?
-	echo -n "Do you wish to restart SSHd? (Y/n)?"
+	ask "Do you wish to restart SSHd? (Y/n)?"
 	read -e RESTART_SSHD
 	if [ "$RESTART_SSHD" != "n" ]; then
 		service ssh restart
@@ -134,7 +134,7 @@ install_extra() {
 configure_user() {
 	echo \>\> Configuring: User Account
 	# Take User Input
-	echo -n "Please enter a user name: "
+	ask "Please enter a user name: "
 	read -e USERNAME
 	username=$USERNAME
 	# Add User Based On Input
@@ -235,7 +235,7 @@ desc_print() {
 }
 
 ask() {
-	echo -e -n "   [1;32m☆ $1 "    
+	echo -e -n "   [1;32m☆ $1 [0m"    
 }
 
 # Print all in green and the ✔ and $1 in bold
