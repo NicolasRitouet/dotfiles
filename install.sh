@@ -63,7 +63,7 @@ main() {
 
 	# Install GIT
 	if git --version &> /dev/null ; then
-		echo "GIT already installed"
+		happy_print "GIT already installed"
 	else
 		ask "Do you wish to install GIT (Y/n)?"
 		read -e INSTALL_GIT
@@ -121,6 +121,7 @@ main() {
 
 # Install Extra Packages Defined In List
 install_extra() {
+	desc_print "Installing extra"
 	# Loop Through Package List
 	while read package; do
 		# Install Currently Selected Package
@@ -132,7 +133,7 @@ install_extra() {
 
 # Add User Account
 configure_user() {
-	echo \>\> Configuring: User Account
+	desc_print "Configuring: User Account"
 	# Take User Input
 	ask "Please enter a user name: "
 	read -e USERNAME
@@ -146,7 +147,7 @@ configure_user() {
 
 # Disable Root SSH Login
 configure_sshroot() {
-	echo \>\> Configuring: Disabling Root SSH Login
+	desc_print "Configuring: Disabling Root SSH Login"
 	# Disable Root SSH Login For OpenSSH
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 }
@@ -158,7 +159,8 @@ installGit() {
 }
 
 copyBashAliases() {
-
+		
+	desc_print "Copy .bash_aliases"
 	cp ${HOME}/.bash_aliases ${HOME}/.bash_aliases.backup
 	echo ".bash_aliases file backup as .bash_aliases.backup"
 	cp .bash_aliases ${HOME}/.bash_aliases
@@ -169,6 +171,8 @@ copyBashAliases() {
 
 }
 copyBashrc() {
+
+	desc_print "copy .bashrc"
 
 	cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
 	echo ".bashrc file backup as .bashrc.backup"
@@ -181,6 +185,7 @@ copyBashrc() {
 
 copyGitconfig() {
 
+	desc_print "copy .gitconfig"
 	cp ${HOME}/.gitconfig ${HOME}/.gitconfig.backup
 	echo ".gitconfig file backup as .gitconfig.backup"
 	cp .gitconfig ${HOME}/.gitconfig
@@ -193,7 +198,7 @@ copyGitconfig() {
 
 
 copySublimeDotFiles() {
-	echo "Work in progress, try again later !"
+	desc_print "Work in progress, try again later !"
 	#mv "$sublime_dir/User" "$sublime_dir/User.backup"
 	#cd "$sublime_dir"
 	#echo "Installing Soda Theme..."
@@ -207,6 +212,7 @@ copySublimeDotFiles() {
 
 installSublimeText() {
 
+	desc_print "Install sublime-text2"
 	sudo apt-get install --force-yes --yes python-software-properties > /dev/null 2>&1 ;
 	quitOnError "Installing python-software-properties now"
 	sudo add-apt-repository ppa:webupd8team/sublime-text-2
