@@ -40,9 +40,14 @@ export PS1="\[\033[00m\]\u@\h\[\033[01;34m\] \w \[\033[31m\]\$(parse_git_branch)
 
 
 
-
+# enable my own aliases
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
+# enable bash completion in interactive shells
+#if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+#    . /etc/bash_completion
+#fi
 
 # PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
