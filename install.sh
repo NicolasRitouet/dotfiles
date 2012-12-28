@@ -61,6 +61,21 @@ main() {
 		copyBashAliases
 	fi
 
+	# Copy .vimrc ?
+	ask "Do you wish to copy .vimrc? (Y/n)?"
+	read -e COPY_VIMRC
+	if [ "$COPY_VIMRC" != "n" ]; then
+		copyVimrc
+	fi
+
+
+	# Copy .tmux.conf ?
+	ask "Do you wish to copy .tmux.conf? (Y/n)?"
+	read -e COPY_TMUX
+	if [ "$COPY_TMUX" != "n" ]; then
+		copyTmux
+	fi
+
 
 	# Install GIT
 	if git --version &> /dev/null ; then
@@ -200,6 +215,34 @@ copyGitconfig() {
 		cp .gitconfig /home/$username/.gitconfig
 	fi
 	happy_print "Copy of .gitconfig" "successful"
+}
+
+copyVimrc() {
+
+	desc_print "copy .vimrc"
+	if [ -f ${HOME}/.vimrc ]; then
+		cp ${HOME}/.vimrc ${HOME}/.vimrc.backup
+		desc_print ".vimrc file backup as .vimrc.backup"
+	fi
+	cp .vimrc ${HOME}/.vimrc
+	if [ "$username" != "root" ]; then
+		cp .vimrc /home/$username/.vimrc
+	fi
+	happy_print "Copy of .vimrc" "successful"
+}
+
+copyTmux() {
+
+	desc_print "copy .tmux.conf"
+	if [ -f ${HOME}/.tmux.conf ]; then
+		cp ${HOME}/.tmux.conf ${HOME}/.tmux.conf.backup
+		desc_print ".tmux.conf file backup as .tmux.conf.backup"
+	fi
+	cp .tmux.conf ${HOME}/.tmux.conf
+	if [ "$username" != "root" ]; then
+		cp .tmux.conf /home/$username/.tmux.conf
+	fi
+	happy_print "Copy of .tmux.conf" "successful"
 }
 
 
