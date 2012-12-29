@@ -22,8 +22,10 @@ menu() {
 		"Disable root login from SSH *" #3
 		"Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #4
 		"Install Git, clone dotfiles and symlink *" #5
-		"Install extras *" #6
-		"Clean root (remove all dotfiles from root) *" #7
+		"Install Yeoman environment (node.js, ruby, etc...) *" #6
+		"Install Sublime-text2 and copy Sublime-settings *" #7
+		"Install extras *" #8
+		"Clean root (remove all dotfiles from root) *" #9
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
@@ -64,10 +66,18 @@ menu() {
 				symlinkDotfile .tmux.conf
 				symlinkDotfile .gitconfig
 				;;
-			6) # Install extras
+			6) # Install yeoman
+				ask "Work in progress"
+
+				;;
+			7) # Install Sublime-text2 and copy settings
+				installSublimeText
+				copySublimeDotFiles
+				;;
+			8) # Install extras
 				install_extra
 				;;
-			7) # Clean root
+			9) # Clean root
 				rm -rf ~/*
 				;;
 	        $(( ${#options[@]}+1 )) )
