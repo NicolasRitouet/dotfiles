@@ -8,11 +8,73 @@ sublime_dir=~/Library/Application\ Support/Sublime\ Text\ 2/Packages
 username=$(whoami)
 
 # Must run as root so that we can install packages
-if [ $(whoami) != "root" ]; then
-	echo -e "\n You need to run this script as root."
-	echo -e "\n Use 'sudo ./$script_name' then enter your password when prompted.\n "
-	exit 1
-fi
+#if [ $(whoami) != "root" ]; then
+#	echo -e "\n You need to run this script as root."
+#	echo -e "\n Use 'sudo ./$script_name' then enter your password when prompted.\n "
+#	exit 1
+#fi
+
+menu() {
+	ask "\n Fresh Linux box script\n \n "
+	PS3="Please enter your choice: (* = sudo)"
+	options=("Update && upgrade your debian *" #1
+		"Create a new user *" #2
+		"Disable root login from SSH *" #3
+		"Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #4
+		"Install Git, clone dotfiles and symlink *" #5
+		"Install extras *" #6
+		"Clean root (remove all dotfiles from root) *" #7
+	)
+	select opt in "${options[@]}"  "Quit"; do
+	    case "$REPLY" in
+	        1) # Update && upgrade debian
+				ask "This script will firstly update your apt-get"
+	            sudo apt-get update > /dev/null
+				happy_print "apt-get update" "successful"
+				sudo apt-get upgrade -y > /dev/null
+				happy_print "apt-get upgrade" "successful"
+	            ;;
+	        2) # Create a user
+	            configure_user
+	            ;;
+	       3) # Disable root
+	            configure_sshroot
+	            ;;
+	        4) # Copy dotfiles
+				copyBashrc
+				copyBashAliases
+				copyVimrc
+				copyTmux
+				copyGitconfig
+
+				;;
+			5) # Clone dotfiles
+				if git --version &> /dev/null ; then
+					echo -e "\n "
+					happy_print "GIT already installed"
+				else
+					installGit
+				fi
+				git clone git@github.com:NicolasRTT/dotfiles.git
+				cd /dotfiles
+				# add symlink for every dotfile
+				;;
+			6) # Install extras
+				install_extra
+				;;
+			7) # Clean root
+				rm -rf ~/*
+				;;
+	        $(( ${#options[@]}+1 )) )
+				echo "If you made some bash changes, don't forget to reload after leaving:"
+				echo ". ~/.bashrc";
+	            break
+	            ;;
+	        *) echo invalid option;;
+	    esac
+	done
+}
+
 
 main() {
 
@@ -304,4 +366,5 @@ sad_print() {
     echo -e "   [1;31m✖ $1[0;31m $2[0m"
 }
 
-main
+# main
+menu
