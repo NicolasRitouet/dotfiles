@@ -15,7 +15,7 @@ username=$(whoami)
 #fi
 
 menu() {
-	ask "\n Fresh Linux box script\n \n "
+	ask "Fresh Linux box script\n"
 	PS3="Please enter your choice: (* = sudo)"
 	options=("Update && upgrade your debian *" #1
 		"Create a new user *" #2
@@ -41,12 +41,11 @@ menu() {
 	            configure_sshroot
 	            ;;
 	        4) # Copy dotfiles
-				copyBashrc
-				copyBashAliases
-				copyVimrc
-				copyTmux
-				copyGitconfig
-
+				copyDotfile .bashrc
+				copyDotfile .bash_aliases
+				copyDotfile .vimrc
+				copyDotfile .tmux.conf
+				copyDotfile .gitconfig
 				;;
 			5) # Clone dotfiles
 				if git --version &> /dev/null ; then
@@ -58,6 +57,12 @@ menu() {
 				git clone git@github.com:NicolasRTT/dotfiles.git
 				cd /dotfiles
 				# add symlink for every dotfile
+
+				symlinkDotfile .bashrc
+				symlinkDotfile .bash_aliases
+				symlinkDotfile .vimrc
+				symlinkDotfile .tmux.conf
+				symlinkDotfile .gitconfig
 				;;
 			6) # Install extras
 				install_extra
@@ -237,9 +242,27 @@ installGit() {
 	quitOnError "Installing git-core now"
 }
 
+
+
+copyDotfile() {
+	desc_print "Copy $1 into ${HOME}"
+	if [ -f ${HOME}/$1 ]; then
+		cp ${HOME}/$1 ${HOME}/$1.backup
+		desc_print "$1 file backup as $1.backup"
+	fi
+	cp $1 ${HOME}/$1
+	happy_print "Copy of $1" "successful"
+}
+
+symlinkDotfile() {
+	desc_print "Linking $1 into ${HOME}"
+	ln -s $1 ${HOME}/$1
+	happy_print "Symlink of $1" "successful"
+}
+
 copyBashAliases() {
 		
-	desc_print "Copy .bash_aliases"
+	desc_print "Copy .bash_aliases into ${HOME}"
 	if [ -f ${HOME}/.bash_aliases ]; then
 		cp ${HOME}/.bash_aliases ${HOME}/.bash_aliases.backup
 		desc_print ".bash_aliases file backup as .bash_aliases.backup"
@@ -251,9 +274,10 @@ copyBashAliases() {
 	happy_print "Copy of .bash_aliases" "successful"
 
 }
+
 copyBashrc() {
 
-	desc_print "copy .bashrc"
+	desc_print "copy .bashrc into ${HOME}"
 	if [ -f ${HOME}/.bashrc ]; then
 		cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
 		desc_print ".bashrc file backup as .bashrc.backup"
@@ -267,7 +291,7 @@ copyBashrc() {
 
 copyGitconfig() {
 
-	desc_print "copy .gitconfig"
+	desc_print "copy .gitconfig into ${HOME}"
 	if [ -f ${HOME}/.gitconfig ]; then
 		cp ${HOME}/.gitconfig ${HOME}/.gitconfig.backup
 		desc_print ".gitconfig file backup as .gitconfig.backup"
@@ -281,7 +305,7 @@ copyGitconfig() {
 
 copyVimrc() {
 
-	desc_print "copy .vimrc"
+	desc_print "copy .vimrc into ${HOME}"
 	if [ -f ${HOME}/.vimrc ]; then
 		cp ${HOME}/.vimrc ${HOME}/.vimrc.backup
 		desc_print ".vimrc file backup as .vimrc.backup"
@@ -295,7 +319,7 @@ copyVimrc() {
 
 copyTmux() {
 
-	desc_print "copy .tmux.conf"
+	desc_print "copy .tmux.conf into ${HOME}"
 	if [ -f ${HOME}/.tmux.conf ]; then
 		cp ${HOME}/.tmux.conf ${HOME}/.tmux.conf.backup
 		desc_print ".tmux.conf file backup as .tmux.conf.backup"
@@ -349,11 +373,11 @@ function quitOnError {
 
 # Print extra descriptions for failure
 desc_print() {
-    echo -e "      * $1 [0;35m$2[0m $3"
+    echo -e "      * $1 [0;35m$2[0m $3\n"
 }
 
 ask() {
-	echo -e -n " [1;32m☆ $1 [0m"    
+	echo -e -n " [1;32m☆ $1 [0m\n"    
 }
 
 # Print all in green and the ✔ and $1 in bold
