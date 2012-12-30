@@ -12,7 +12,7 @@ function happy_print() { echo -e "   [1;32m✔ $1[0;32m $2[0m"; }
 function sad_print() { echo -e "   [1;31m✖ $1[0;31m $2[0m"; }
 
 
-if [ "$(whoami)" = "root" ]; then
+if [ "$(whoami)" != "root" ]; then
 	desc_print "Calling this script with user '$(whoami)'"
 	desc_print "This script is limited since it wasn't called with sudo."
 else
@@ -208,7 +208,7 @@ installPackage() {
 }
 
 # Launch menu
-if [ "$(whoami)" != "root" ]
+if [ "$(whoami)" = "root" ]
 then
 	menuRoot
 else
