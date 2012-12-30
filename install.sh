@@ -15,22 +15,17 @@ menu() {
 		"Install Yeoman environment (node.js, ruby, etc...) *" #6
 		"Install Sublime-text2 and copy Sublime-settings *" #7
 		"Install extras *" #8
-		"Clean root (remove all dotfiles from root) *" #9
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
 	        1) # Update && upgrade debian
-				ask "This script will firstly update your apt-get"
-	            sudo apt-get update > /dev/null
-				happy_print "apt-get update" "successful"
-				sudo apt-get upgrade -y > /dev/null
-				happy_print "apt-get upgrade" "successful"
+				sudo updateAndUpgrade
 	            ;;
 	        2) # Create a user
-	            configure_user
+	            sudo configure_user
 	            ;;
 	       3) # Disable root
-	            configure_sshroot
+	            sudo configure_sshroot
 	            ;;
 	        4) # Copy dotfiles
 				copyDotfile .bashrc
@@ -44,7 +39,7 @@ menu() {
 					echo -e "\n "
 					happy_print "GIT already installed"
 				else
-					installPackage git-core
+					sudo installPackage git-core
 				fi
 				git clone git@github.com:NicolasRTT/dotfiles.git
 				cd /dotfiles
@@ -61,14 +56,11 @@ menu() {
 
 				;;
 			7) # Install Sublime-text2 and copy settings
-				installSublimeText
+				sudo installSublimeText
 				copySublimeDotFiles
 				;;
 			8) # Install extras
-				install_extra
-				;;
-			9) # Clean root
-				rm -rf ~/*
+				sudo install_extra
 				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
@@ -79,6 +71,15 @@ menu() {
 	        *) echo invalid option;;
 	    esac
 	done
+}
+
+updateAndUpgrade() {
+	desc_print "Updating ..."
+    apt-get update > /dev/null
+	happy_print "apt-get update" "successful"
+	desc_print "Upgrading ..."
+	apt-get upgrade -y > /dev/null
+	happy_print "apt-get upgrade" "successful"
 }
 
 # Install Extra Packages Defined In File extra
@@ -103,7 +104,7 @@ configure_user() {
 	useradd -m -s /bin/bash $USERNAME
 	# Set Password For Newly Added User
 	passwd $USERNAME
-	sudo echo $USERNAME ' ALL=(ALL:ALL) ALL' >> /etc/sudoers
+	echo $USERNAME ' ALL=(ALL:ALL) ALL' >> /etc/sudoers
 }
 
 # Disable Root SSH Login
@@ -113,8 +114,7 @@ configure_sshroot() {
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 }
 
-
-
+# Copy a dotfile to the home directory of the current user
 copyDotfile() {
 	desc_print "Copy $1 into ${HOME}"
 	if [ -f ${HOME}/$1 ]; then
@@ -125,6 +125,7 @@ copyDotfile() {
 	happy_print "Copy of $1" "successful"
 }
 
+# Symlink a dotfile to the home directory of the current user
 symlinkDotfile() {
 	desc_print "Linking $1 into ${HOME}"
 	ln -s $1 ${HOME}/$1
@@ -149,8 +150,8 @@ copySublimeDotFiles() {
 installSublimeText() {
 
 	installPackage python-software-properties # Needed to call add-apt-repository
-	sudo add-apt-repository ppa:webupd8team/sublime-text-2
-	sudo apt-get update > /dev/null
+	add-apt-repository ppa:webupd8team/sublime-text-2
+	apt-get update > /dev/null
 	installPackage sublime-text
 }
 
@@ -161,7 +162,7 @@ installSublimeText() {
 
 installPackage() {
 	desc_print "Installing package $1"
-	sudo apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
+	apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		sad_print "\n Install of $1" "FAIL"
