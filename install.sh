@@ -4,28 +4,71 @@
 #
 # @author Nicolas Ritouet <nicolas@ritouet.com>
 
+
+# Extra logs methods
+function desc_print() { echo -e "      ➜ $1 [0;35m$2[0m $3\n"; }
+function ask() { echo -e -n " [1;32m☆ $1 [0m\n"; }
+function happy_print() { echo -e "   [1;32m✔ $1[0;32m $2[0m"; }
+function sad_print() { echo -e "   [1;31m✖ $1[0;31m $2[0m"; }
+
+
+isRoot=("$(whoami)" = "root")
+if [ !isRoot ]; then
+	desc_print "Calling this script with user '$(whoami)'"
+	desc_print "This script is limited since it wasn't called with sudo."
+else
+	desc_print "Calling this script with user '$SUDO_USER'"
+
+fi
+
+
 menu() {
 	ask "Setup your Fresh Linux Box\n"
-	PS3="Please enter your choice: (* = sudo)"
-	options=("Update && upgrade your debian *" #1
-		"Create a new user *" #2
-		"Disable root login from SSH *" #3
+	PS3="Please enter your choice:"
+	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #1
+	)
+	select opt in "${options[@]}"  "Quit"; do
+	    case "$REPLY" in
+	        1) # Copy dotfiles
+				copyDotfile .bashrc
+				copyDotfile .bash_aliases
+				copyDotfile .vimrc
+				copyDotfile .tmux.conf
+				copyDotfile .gitconfig
+				;;
+	        $(( ${#options[@]}+1 )) )
+				echo "If you made some bash changes, don't forget to reload after leaving:"
+				echo ". ~/.bashrc";
+				exit 0
+	            break
+	            ;;
+	        *) echo invalid option;;
+	    esac
+	done
+}
+
+menuRoot() {
+	ask "Setup your Fresh Linux Box\n"
+	PS3="Please enter your choice:"
+	options=("Update && upgrade your debian" #1
+		"Create a new user" #2
+		"Disable root login from SSH" #3
 		"Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #4
-		"Install Git, clone dotfiles and symlink *" #5
-		"Install Yeoman environment (node.js, ruby, etc...) *" #6
-		"Install Sublime-text2 and copy Sublime-settings *" #7
-		"Install extras *" #8
+		"Install Git, clone dotfiles and symlink" #5
+		"Install Yeoman environment (node.js, ruby, etc...)" #6
+		"Install Sublime-text2 and copy Sublime-settings" #7
+		"Install extras" #8
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
 	        1) # Update && upgrade debian
-				sudo updateAndUpgrade
+				updateAndUpgrade
 	            ;;
 	        2) # Create a user
-	            sudo configure_user
+	            configure_user
 	            ;;
 	       3) # Disable root
-	            sudo configure_sshroot
+	            configure_sshroot
 	            ;;
 	        4) # Copy dotfiles
 				copyDotfile .bashrc
@@ -39,7 +82,7 @@ menu() {
 					echo -e "\n "
 					happy_print "GIT already installed"
 				else
-					sudo installPackage git-core
+					installPackage git-core
 				fi
 				git clone git@github.com:NicolasRTT/dotfiles.git
 				cd /dotfiles
@@ -56,11 +99,11 @@ menu() {
 
 				;;
 			7) # Install Sublime-text2 and copy settings
-				sudo installSublimeText
+				installSublimeText
 				copySublimeDotFiles
 				;;
 			8) # Install extras
-				sudo install_extra
+				install_extra
 				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
@@ -132,7 +175,6 @@ symlinkDotfile() {
 	happy_print "Symlink of $1" "successful"
 }
 
-
 copySublimeDotFiles() {
 	sublime_dir=~/Library/Application\ Support/Sublime\ Text\ 2/Packages
 	desc_print "Work in progress, try again later !"
@@ -146,7 +188,6 @@ copySublimeDotFiles() {
 
 }
 
-
 installSublimeText() {
 
 	installPackage python-software-properties # Needed to call add-apt-repository
@@ -155,11 +196,7 @@ installSublimeText() {
 	installPackage sublime-text
 }
 
-
-#---------------------------------------------
-# UTILITY METHODS
-#---------------------------------------------
-
+# Install package, check if successfull and display fial or success
 installPackage() {
 	desc_print "Installing package $1"
 	apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
@@ -171,24 +208,10 @@ installPackage() {
 	fi
 }
 
-# Print extra descriptions for failure
-desc_print() {
-    echo -e "      * $1 [0;35m$2[0m $3\n"
-}
-
-ask() {
-	echo -e -n " [1;32m☆ $1 [0m\n"    
-}
-
-# Print all in green and the ✔ and $1 in bold
-happy_print() {
-    echo -e "   [1;32m✔ $1[0;32m $2[0m"
-}
-
-# Print all in red and the ✖ and $1 in bold
-sad_print() {
-    echo -e "   [1;31m✖ $1[0;31m $2[0m"
-}
-
 # Launch menu
-menu
+if [ isRoot ]
+then
+	menuRoot
+else
+	menu
+fi
