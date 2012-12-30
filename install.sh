@@ -6,22 +6,28 @@
 
 
 # Extra logs methods
-function desc_print() { echo -e "      ➜ $1 [0;35m$2[0m $3\n"; }
+function desc_print() { echo -e "      ➜ $1 [0;35m$2[0m $3"; }
 function ask() { echo -e -n " [1;32m☆ $1 [0m\n"; }
 function happy_print() { echo -e "   [1;32m✔ $1[0;32m $2[0m"; }
 function sad_print() { echo -e "   [1;31m✖ $1[0;31m $2[0m"; }
 
+function e_header()   { echo -e "\n\033[1m$@\033[0m"; }
+function e_success()  { echo -e " \033[1;32m✔\033[0m  $@"; }
+function e_error()    { echo -e " \033[1;31m✖\033[0m  $@"; }
+function e_arrow()    { echo -e " \033[1;33m➜\033[0m  $@"; }
+
+e_header "Setup your Fresh Linux Box\n"
 
 if [ "$(whoami)" != "root" ]; then
-	desc_print "Calling this script with user '$(whoami)'"
-	desc_print "This script is limited since it wasn't called with sudo."
-	desc_print "To get the full functionnality, please type the following:"
-	desc_print "sudo ./${0##*/}"
+	e_arrow "Calling this script with user '$(whoami)'"
+	e_arrow "This script is limited since it wasn't called with sudo."
+	e_arrow "To get the full functionnality, please type the following:"
+	e_arrow "sudo ./${0##*/}"
+	echo -e "\n"
 fi
 
 
 menu() {
-	ask "Setup your Fresh Linux Box\n"
 	PS3="Please enter your choice:"
 	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #1
 	)
@@ -46,7 +52,6 @@ menu() {
 }
 
 menuRoot() {
-	ask "Setup your Fresh Linux Box\n"
 	PS3="Please enter your choice:"
 	options=("Update && upgrade your debian" #1
 		"Create a new user" #2
