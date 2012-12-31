@@ -245,6 +245,12 @@ configure_sshroot() {
 	e_arrow "Configuring: Disabling Root SSH Login"
 	# Disable Root SSH Login For OpenSSH
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+	if [ $? -gt 0 ]	# What did last command return ?
+	then
+		sad_print "Disable SSH Root login" "fail!"
+	else
+		happy_print "Disable SSH Root login" "Success"
+	fi
 }
 
 # Copy a dotfile to the home directory of the current user
