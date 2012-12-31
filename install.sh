@@ -81,21 +81,7 @@ menuRoot() {
 				copyDotfile .gitconfig
 				;;
 			5) # Clone dotfiles
-				if git --version &> /dev/null ; then
-					echo -e "\n "
-					happy_print "GIT already installed"
-				else
-					installPackage git-core
-				fi
-				git clone git@github.com:NicolasRTT/dotfiles.git
-				cd /dotfiles
-				# add symlink for every dotfile
-
-				symlinkDotfile .bashrc
-				symlinkDotfile .bash_aliases
-				symlinkDotfile .vimrc
-				symlinkDotfile .tmux.conf
-				symlinkDotfile .gitconfig
+				cloneDotfiles
 				;;
 			6) # Install yeoman
 				ask "Work in progress"
@@ -119,9 +105,28 @@ menuRoot() {
 	done
 }
 
+
+cloneDotfiles() {
+	if git --version &> /dev/null ; then
+		echo -e "\n "
+		happy_print "GIT already installed"
+	else
+		installPackage git-core
+	fi
+	git clone https://github.com/NicolasRTT/dotfiles.git
+	cd /dotfiles
+	# add symlink for every dotfile
+
+	symlinkDotfile .bashrc
+	symlinkDotfile .bash_aliases
+	symlinkDotfile .vimrc
+	symlinkDotfile .tmux.conf
+	symlinkDotfile .gitconfig
+}
+
 updateAndUpgrade() {
 	desc_print "Updating ..."
-    apt-get update > /dev/null
+    	apt-get update > /dev/null
 	happy_print "apt-get update" "successful"
 	desc_print "Upgrading ..."
 	apt-get upgrade -y > /dev/null
@@ -168,7 +173,12 @@ copyDotfile() {
 		desc_print "$1 file backup as $1.backup"
 	fi
 	cp $1 ${HOME}/$1
-	happy_print "Copy of $1" "successful"
+	if [ $? -gt 0 ]	# What did last command return ?
+	then
+		sad_print "\n Copy of $1" "FAIL"
+	else
+		happy_print "\n Copy of $1" "Successful!"
+	fi
 }
 
 # Symlink a dotfile to the home directory of the current user
