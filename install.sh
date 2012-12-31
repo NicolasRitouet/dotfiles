@@ -245,6 +245,7 @@ configure_user() {
 # Disable Root SSH Login
 configure_sshroot() {
 	e_arrow "Configuring: Disabling Root SSH Login"
+	e_arrow "BE SURE TO CREATE A NEW USER BEFORE !"
 	# Disable Root SSH Login For OpenSSH
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 	if [ $? -gt 0 ]	# What did last command return ?
@@ -252,6 +253,7 @@ configure_sshroot() {
 		sad_print "Disable SSH Root login" "fail!"
 	else
 		happy_print "Disable SSH Root login" "Success"
+		e_arrow "You need to restart sshd or reboot to see the effect"
 	fi
 }
 
