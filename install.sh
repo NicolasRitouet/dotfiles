@@ -84,7 +84,7 @@ menuRoot() {
 				cloneDotfiles
 				;;
 			6) # Install yeoman
-				ask "Work in progress"
+				installYeoman
 
 				;;
 			7) # Install Sublime-text2 and copy settings
@@ -107,6 +107,7 @@ menuRoot() {
 
 
 installYeoman() {
+	e_arrow "Install Yeoman"
 	# Thx http://ericterpstra.com/2012/10/install-yeoman-and-all-its-dependencies-in-ubuntu-linux/
 	installPackage curl
 
