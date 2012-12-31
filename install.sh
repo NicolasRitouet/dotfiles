@@ -152,6 +152,7 @@ installYeoman() {
 	installPackage git-core
 
 # Install Node.js and NPM
+	installPackage python-software-properties # Needed to call add-apt-repository
 	add-apt-repository -y ppa:chris-lea/node.js
 	apt-get update > /dev/null
 	installPackage nodejs npm
@@ -161,6 +162,7 @@ installYeoman() {
 	curl -L get.rvm.io | bash -s stable
 	echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
 	source "$HOME/.rvm/scripts/rvm"
+	sudo ln -s "$HOME/.rvm/scripts/rvm" /usr/local/bin/rvm
 	installPackage openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
 	rvm install 1.9.3
 	rvm use 1.9.3 
@@ -171,11 +173,8 @@ installYeoman() {
 	gem install compass
 
 # Install PhantomJS
-	cd ~/
 	wget http://phantomjs.googlecode.com/files/phantomjs-1.7.0-linux-x86_64.tar.bz2
-	tar -xvf 
-	cd /usr/local/share
-	sudo tar xvf ~/phantomjs-1.7.0-linux-x86_64.tar.bz2
+	sudo tar xvf phantomjs-1.7.0-linux-x86_64.tar.bz2 -C /usr/local/share
 	sudo ln -s /usr/local/share/phantomjs-1.7.0-linux-x86_64/ /usr/local/share/phantomjs
 	sudo ln -s /usr/local/share/phantomjs/bin/phantomjs /usr/local/bin/phantomjs
 	phantomjs --version
