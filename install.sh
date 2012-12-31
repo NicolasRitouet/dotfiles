@@ -61,6 +61,7 @@ menuRoot() {
 		"Install Yeoman environment (node.js, ruby, etc...)" #6
 		"Install Sublime-text2 and copy Sublime-settings" #7
 		"Install extras" #8
+		"Create SSH Key for Github" #9
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
@@ -94,6 +95,9 @@ menuRoot() {
 			8) # Install extras
 				install_extra
 				;;
+			9) # Create github SSH Key
+				createSSHKey
+				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
 				echo ". ~/.bashrc";
@@ -105,6 +109,34 @@ menuRoot() {
 	done
 }
 
+
+createSSHKey() {
+	e_arrow "Creating a SSH Key into ${HOME}/.ssh"
+	if [ -d ${HOME}/.ssh ]; then
+		e_arrow "Backup of old Keys"
+		cd ${HOME}/.ssh
+		mkdir key_backup
+		cp id_rsa* key_backup
+		rm id_rsa*
+	else
+		mkdir -p ${HOME}/.ssh
+	fi
+	echo -n "Type your email, followed by [ENTER]:"
+	read EMAIL
+	ssh-keygen -t rsa -C "$EMAIL" -f /home/$SUDO_USER/.ssh/id_rsa
+	if [ $? -gt 0 ]	# What did last command return ?
+	then
+		sad_print "Looks like ssh-keygen failed, try again"
+	else
+		installPackage xclip
+		xclip -sel clip < ${HOME}/.ssh/id_rsa.pub
+		e_success "Your key was copied in your clipboard"
+		e_arrow "if not, please execute this:"
+		echo -e "xclip -sel clip < ${HOME}/.ssh/id_rsa.pub\n"
+		echo -e "Please go to your Github account Setting and add the key:"
+		echo -e "https://github.com/settings/ssh"
+	fi
+}
 
 installYeoman() {
 	e_arrow "Install Yeoman"
