@@ -116,13 +116,14 @@ installYeoman() {
 
 # Install Node.js and NPM
 	add-apt-repository -y ppa:chris-lea/node.js
-	apt-get update
+	apt-get update > /dev/null
 	installPackage nodejs npm
 
 # Install RVM & Ruby
 	installPackage build-essential
 	curl -L get.rvm.io | bash -s stable
 	echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
+	source "$HOME/.rvm/scripts/rvm"
 	installPackage openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
 	rvm install 1.9.3
 	rvm use 1.9.3 
@@ -146,7 +147,7 @@ installYeoman() {
 	installPackage libjpeg-turbo-progs optipng
 # Install Yeoman !!! :)
 	npm install -g yeoman
-	# curl -L get.yeoman.io | bash
+	echo -e "Check with: \n curl -L get.yeoman.io | bash"
 
 
 }
@@ -264,7 +265,7 @@ installPackage() {
 	while [ ${#} -gt 0 ]; do
 		INSTALLED=$(dpkg -l | grep $1)
 		if [ "$INSTALLED" != "" ]; then
-			happy_print "Package $1 alread installed!"
+			happy_print "Package $1 already installed!"
 		else
 			e_arrow "Installing package $1"
 			apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
