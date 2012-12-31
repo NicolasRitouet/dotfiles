@@ -106,6 +106,50 @@ menuRoot() {
 }
 
 
+installYeoman() {
+	# Thx http://ericterpstra.com/2012/10/install-yeoman-and-all-its-dependencies-in-ubuntu-linux/
+	installPackage curl
+
+# Install Git
+	installPackage git-core
+
+# Install Node.js and NPM
+	add-apt-repository -y ppa:chris-lea/node.js
+	apt-get update
+	installPackage nodejs npm
+
+# Install RVM & Ruby
+	installPackage build-essential
+	curl -L get.rvm.io | bash -s stable
+	echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
+	installPackage openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+	rvm install 1.9.3
+	rvm use 1.9.3 
+	rvm --default use 1.9.3-p194
+
+# Install compass
+	gem update --system
+	gem install compass
+
+# Install PhantomJS
+	cd ~/
+	wget http://phantomjs.googlecode.com/files/phantomjs-1.7.0-linux-x86_64.tar.bz2
+	tar -xvf 
+	cd /usr/local/share
+	sudo tar xvf ~/phantomjs-1.7.0-linux-x86_64.tar.bz2
+	sudo ln -s /usr/local/share/phantomjs-1.7.0-linux-x86_64/ /usr/local/share/phantomjs
+	sudo ln -s /usr/local/share/phantomjs/bin/phantomjs /usr/local/bin/phantomjs
+	phantomjs --version
+	rm ~/phantomjs-1.7.0-linux-x86_64.tar.bz2
+# Install JPEGTRAN / OptiPNG
+	installPackage libjpeg-turbo-progs optipng
+# Install Yeoman !!! :)
+	npm install -g yeoman
+	# curl -L get.yeoman.io | bash
+
+
+}
+
 cloneDotfiles() {
 	if git --version &> /dev/null ; then
 		happy_print "GIT already installed"
@@ -216,19 +260,22 @@ installSublimeText() {
 
 # Install package, check if successfull and display fail or success
 installPackage() {
-	INSTALLED=$(dpkg -l | grep $1)
-	if [ "$INSTALLED" != "" ]; then
-		happy_print "Package $1 alread installed!"
-	else
-		e_arrow "Installing package $1"
-		apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
-		if [ $? -gt 0 ]	# What did last command return ?
-		then
-			sad_print "Install of $1" "FAIL"
+	while [ ${#} -gt 0 ]; do
+		INSTALLED=$(dpkg -l | grep $1)
+		if [ "$INSTALLED" != "" ]; then
+			happy_print "Package $1 alread installed!"
 		else
-			happy_print "Install of $1" "Successful!"
+			e_arrow "Installing package $1"
+			apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
+			if [ $? -gt 0 ]	# What did last command return ?
+			then
+				sad_print "Install of $1" "FAIL"
+			else
+				happy_print "Install of $1" "Successful!"
+			fi
 		fi
-	fi
+		shift
+	done
 }
 
 # Launch menu
