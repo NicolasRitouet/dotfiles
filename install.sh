@@ -108,7 +108,6 @@ menuRoot() {
 
 cloneDotfiles() {
 	if git --version &> /dev/null ; then
-		echo -e "\n "
 		happy_print "GIT already installed"
 	else
 		installPackage git-core
@@ -175,9 +174,9 @@ copyDotfile() {
 	cp $1 ${HOME}/$1
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
-		sad_print "\n Copy of $1" "FAIL"
+		sad_print "Copy of $1" "FAIL"
 	else
-		happy_print "\n Copy of $1" "Successful!"
+		happy_print "Copy of $1" "Successful!"
 	fi
 }
 
@@ -185,7 +184,12 @@ copyDotfile() {
 symlinkDotfile() {
 	desc_print "Linking $1 into ${HOME}"
 	ln -s $1 ${HOME}/$1
-	happy_print "Symlink of $1" "successful"
+	if [ $? -gt 0 ]	# What did last command return ?
+	then
+		sad_print "Symlink of $1" "FAIL"
+	else
+		happy_print "Symlink of $1" "Successful!"
+	fi
 }
 
 copySublimeDotFiles() {
@@ -215,9 +219,9 @@ installPackage() {
 	apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
-		sad_print "\n Install of $1" "FAIL"
+		sad_print "Install of $1" "FAIL"
 	else
-		happy_print "\n Install of $1" "Successful!"
+		happy_print "Install of $1" "Successful!"
 	fi
 }
 
