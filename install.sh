@@ -124,17 +124,17 @@ cloneDotfiles() {
 }
 
 updateAndUpgrade() {
-	desc_print "Updating ..."
+	e_arrow "Updating ..."
     	apt-get update > /dev/null
 	happy_print "apt-get update" "successful"
-	desc_print "Upgrading ..."
+	e_arrow "Upgrading ..."
 	apt-get upgrade -y > /dev/null
 	happy_print "apt-get upgrade" "successful"
 }
 
 # Install Extra Packages Defined In File extra
 install_extra() {
-	desc_print "Installing extra"
+	e_arrow "Installing extra"
 	# Loop Through Package List
 	while read package; do
 		# Install Currently Selected Package
@@ -146,7 +146,7 @@ install_extra() {
 
 # Add User Account
 configure_user() {
-	desc_print "Configuring: User Account"
+	e_arrow "Configuring: User Account"
 	# Take User Input
 	ask "Please enter a user name: "
 	read -e USERNAME
@@ -159,17 +159,17 @@ configure_user() {
 
 # Disable Root SSH Login
 configure_sshroot() {
-	desc_print "Configuring: Disabling Root SSH Login"
+	e_arrow "Configuring: Disabling Root SSH Login"
 	# Disable Root SSH Login For OpenSSH
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 }
 
 # Copy a dotfile to the home directory of the current user
 copyDotfile() {
-	desc_print "Copy $1 into ${HOME}"
+	e_arrow "Copy $1 into ${HOME}"
 	if [ -f ${HOME}/$1 ]; then
 		cp ${HOME}/$1 ${HOME}/$1.backup
-		desc_print "$1 file backup as $1.backup"
+		happy_print "$1 file backup as $1.backup"
 	fi
 	cp $1 ${HOME}/$1
 	if [ $? -gt 0 ]	# What did last command return ?
@@ -182,7 +182,7 @@ copyDotfile() {
 
 # Symlink a dotfile to the home directory of the current user
 symlinkDotfile() {
-	desc_print "Linking $1 into ${HOME}"
+	e_arrow "Linking $1 into ${HOME}"
 	ln -s $1 ${HOME}/$1
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
@@ -194,7 +194,8 @@ symlinkDotfile() {
 
 copySublimeDotFiles() {
 	sublime_dir=~/Library/Application\ Support/Sublime\ Text\ 2/Packages
-	desc_print "Work in progress, try again later !"
+	e_arrow "Copy Sublime settings"
+	e_arrow "Work in progress, try again later !"
 	#mv "$sublime_dir/User" "$sublime_dir/User.backup"
 	#cd "$sublime_dir"
 	#echo "Installing Soda Theme..."
@@ -208,7 +209,7 @@ copySublimeDotFiles() {
 installSublimeText() {
 
 	installPackage python-software-properties # Needed to call add-apt-repository
-	add-apt-repository ppa:webupd8team/sublime-text-2
+	add-apt-repository -y ppa:webupd8team/sublime-text-2
 	apt-get update > /dev/null
 	installPackage sublime-text
 }
@@ -219,7 +220,7 @@ installPackage() {
 	if [ "$INSTALLED" != "" ]; then
 		happy_print "Package $1 alread installed!"
 	else
-		desc_print "Installing package $1"
+		e_arrow "Installing package $1"
 		apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
 		if [ $? -gt 0 ]	# What did last command return ?
 		then
