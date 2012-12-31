@@ -96,7 +96,8 @@ menuRoot() {
 				install_extra
 				;;
 			9) # Create github SSH Key
-				createSSHKey
+				ask "Work in progress, no working currently"
+				# createSSHKey
 				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
@@ -111,25 +112,29 @@ menuRoot() {
 
 
 createSSHKey() {
-	e_arrow "Creating a SSH Key into ${HOME}/.ssh"
-	if [ -d ${HOME}/.ssh ]; then
+	# problem to solve: the public key seems to be saved into the wrong directory
+	SSH_DIR=/home/$SUDO_USER/.ssh
+	e_arrow "Creating a SSH Key into $SSH_DIR"
+	if [ -d $SSH_DIR ]; then
 		e_arrow "Backup of old Keys"
-		cd ${HOME}/.ssh
-		mkdir key_backup
-		cp id_rsa* key_backup
-		rm id_rsa*
+		mkdir $SSH_DIR/key_backup
+		chown $SUDO_USER $SSH_DIR/key_backup
+		cp $SSH_DIR/id_rsa* $SSH_DIR/key_backup
+		rm $SSH_DIR/id_rsa*
 	else
-		mkdir -p ${HOME}/.ssh
+		mkdir $SSH_DIR
+		chown $SUDO_USER $SSH_DIR
 	fi
 	echo -n "Type your email, followed by [ENTER]:"
 	read EMAIL
-	ssh-keygen -t rsa -C "$EMAIL" -f /home/$SUDO_USER/.ssh/id_rsa
+	ssh-keygen -t rsa -C "$EMAIL" -f $SSH_DIR/id_rsa
+	# Copy public key from root to $HOME?
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		sad_print "Looks like ssh-keygen failed, try again"
 	else
 		installPackage xclip
-		xclip -sel clip < ${HOME}/.ssh/id_rsa.pub
+		xclip -sel clip < $SSH_DIR/id_rsa.pub
 		e_success "Your key was copied in your clipboard"
 		e_arrow "if not, please execute this:"
 		echo -e "xclip -sel clip < ${HOME}/.ssh/id_rsa.pub\n"
@@ -190,8 +195,8 @@ cloneDotfiles() {
 	else
 		installPackage git-core
 	fi
-	git clone https://github.com/NicolasRTT/dotfiles.git
-	cd /dotfiles
+	git clone git@github.com:NicolasRTT/dotfiles.git
+	cd ./dotfiles
 	# add symlink for every dotfile
 
 	symlinkDotfile .bashrc
