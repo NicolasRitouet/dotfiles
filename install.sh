@@ -4,6 +4,7 @@
 #
 # @author Nicolas Ritouet <nicolas@ritouet.com>
 
+
 # Extra logs methods
 function desc_print() { echo -e "      ➜ $1 [0;35m$2[0m $3"; }
 function ask() { echo -e -n " [1;32m☆ $1 [0m\n"; }
@@ -23,9 +24,6 @@ if [ "$(whoami)" != "root" ]; then
 	e_arrow "To get the full functionnality, please type the following:"
 	e_arrow "sudo ./${0##*/}"
 	echo -e "\n"
-	USER_HOME=${HOME}
-else
-	USER_HOME=/home/$SUDO_USER
 fi
 
 
@@ -115,7 +113,7 @@ menuRoot() {
 
 createSSHKey() {
 	# problem to solve: the public key seems to be saved into the wrong directory
-	SSH_DIR=$USER_HOME/.ssh
+	SSH_DIR=/home/$SUDO_USER/.ssh
 	e_arrow "Creating a SSH Key into $SSH_DIR"
 	if [ -d $SSH_DIR ]; then
 		e_arrow "Backup of old Keys"
@@ -130,7 +128,7 @@ createSSHKey() {
 	echo -n "Type your email, followed by [ENTER]:"
 	read EMAIL
 	ssh-keygen -t rsa -C "$EMAIL" -f $SSH_DIR/id_rsa
-	# Copy public key from root to $USER_HOME?
+	# Copy public key from root to $HOME?
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		sad_print "Looks like ssh-keygen failed, try again"
@@ -162,7 +160,7 @@ installYeoman() {
 	installPackage build-essential
 	curl -L get.rvm.io | bash -s stable
 	echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
-	source "$HOME/.rvm/scripts/rvm" # Maybe wrong directory
+	source "$HOME/.rvm/scripts/rvm"
 	installPackage openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
 	rvm install 1.9.3
 	rvm use 1.9.3 
@@ -245,7 +243,7 @@ configure_user() {
 # Disable Root SSH Login
 configure_sshroot() {
 	e_arrow "Configuring: Disabling Root SSH Login"
-	e_arrow "BE SURE TO CREATE A NEW USER BEFORE !"
+	e_arrow "BE SURE TO CREATE A NEW USER BEFORE"
 	# Disable Root SSH Login For OpenSSH
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 	if [ $? -gt 0 ]	# What did last command return ?
@@ -253,18 +251,18 @@ configure_sshroot() {
 		sad_print "Disable SSH Root login" "fail!"
 	else
 		happy_print "Disable SSH Root login" "Success"
-		e_arrow "You need to restart sshd or reboot to see the effect"
+		e_arrow "You need to restart sshd or reboot to take the changes"
 	fi
 }
 
 # Copy a dotfile to the home directory of the current user
 copyDotfile() {
-	e_arrow "Copy $1 into $USER_HOME"
-	if [ -f $USER_HOME/$1 ]; then
-		cp $USER_HOME/$1 $USER_HOME/$1.backup
+	e_arrow "Copy $1 into ${HOME}"
+	if [ -f ${HOME}/$1 ]; then
+		cp ${HOME}/$1 ${HOME}/$1.backup
 		happy_print "$1 file backup as $1.backup"
 	fi
-	cp $1 $USER_HOME/$1
+	cp $1 ${HOME}/$1
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		sad_print "Copy of $1" "FAIL"
@@ -275,8 +273,8 @@ copyDotfile() {
 
 # Symlink a dotfile to the home directory of the current user
 symlinkDotfile() {
-	e_arrow "Linking $1 into $USER_HOME"
-	ln -s $1 $USER_HOME/$1
+	e_arrow "Linking $1 into ${HOME}"
+	ln -s $1 ${HOME}/$1
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		sad_print "Symlink of $1" "FAIL"
