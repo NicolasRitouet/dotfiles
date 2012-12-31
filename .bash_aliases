@@ -60,6 +60,7 @@ alias path='echo -e ${PATH//:/\\n}'
 alias h='history | grep '
 
 alias install='sudo apt-get install '
+alias pbcopy='xclip -selection clipboard'
 
 
 ##################
