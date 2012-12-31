@@ -153,16 +153,17 @@ installYeoman() {
 
 # Install Node.js and NPM
 	installPackage python-software-properties # Needed to call add-apt-repository
-	add-apt-repository -y ppa:chris-lea/node.js
+	add-apt-repository ppa:chris-lea/node.js
 	apt-get update > /dev/null
 	installPackage nodejs npm
 
 # Install RVM & Ruby
 	installPackage build-essential
 	curl -L get.rvm.io | bash -s stable
-	echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
-	source "$HOME/.rvm/scripts/rvm"
-	sudo ln -s "$HOME/.rvm/scripts/rvm" /usr/local/bin/rvm
+	# Not needed anymore, add the PATH=$PATH:/usr/local/bin in .bashrc
+	# echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
+	# source "$HOME/.rvm/scripts/rvm"
+	# sudo ln -s /usr/local/rvm/bin /usr/local/bin/rvm
 	installPackage openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
 	rvm install 1.9.3
 	rvm use 1.9.3 
@@ -299,7 +300,7 @@ copySublimeDotFiles() {
 installSublimeText() {
 
 	installPackage python-software-properties # Needed to call add-apt-repository
-	add-apt-repository -y ppa:webupd8team/sublime-text-2
+	add-apt-repository ppa:webupd8team/sublime-text-2
 	apt-get update > /dev/null
 	installPackage sublime-text
 }
