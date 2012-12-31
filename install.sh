@@ -213,15 +213,20 @@ installSublimeText() {
 	installPackage sublime-text
 }
 
-# Install package, check if successfull and display fial or success
+# Install package, check if successfull and display fail or success
 installPackage() {
-	desc_print "Installing package $1"
-	apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
-	if [ $? -gt 0 ]	# What did last command return ?
-	then
-		sad_print "Install of $1" "FAIL"
+	INSTALLED=$(dpkg -l | grep $1)
+	if [ "$INSTALLED" != "" ]; then
+		happy_print "Package $1 alread installed!"
 	else
-		happy_print "Install of $1" "Successful!"
+		desc_print "Installing package $1"
+		apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
+		if [ $? -gt 0 ]	# What did last command return ?
+		then
+			sad_print "Install of $1" "FAIL"
+		else
+			happy_print "Install of $1" "Successful!"
+		fi
 	fi
 }
 
