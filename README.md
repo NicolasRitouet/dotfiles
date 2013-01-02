@@ -23,6 +23,8 @@ Run this:
 
 
 ## Todo
+- Fix SSH generation problem (copy the public key in the right place?)
+- Fix compass installation (Gem not in the path? $PATH:/var/lib/gems/1.8/bin)
 - Add bash_completion
 - Rollback if password error while creating a user
 - improve prompt
