@@ -1,24 +1,23 @@
+
+############################
+#         HISTORY          #
+############################
 # Expand the history size
 HISTFILESIZE=100000000
 HISTSIZE=100000
+
 # Set to avoid spamming up the history file
 HISTIGNORE="cd:ls:[bf]g:clear:exit"
+
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+# Don't check mail when opening terminal.
+unset MAILCHECK
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-
+############################
+#         PROMPT           #
+############################
 #GIT
 simple_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
@@ -46,8 +45,16 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # enable bash completion in interactive shells
-#if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-#    . /etc/bash_completion
-#fi
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+
+# Load RVM, if you are using it
+[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+
+############################
+#           PATH           #
+############################
+
 PATH=$PATH:/usr/local/bin
-# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+PATH=$PATH:~/.gem/ruby/1.8/bin
