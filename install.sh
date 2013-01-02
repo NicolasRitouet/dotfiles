@@ -196,8 +196,8 @@ cloneDotfiles() {
 	else
 		installPackage git-core
 	fi
-	git clone git@github.com:NicolasRTT/dotfiles.git
-	cd ./dotfiles
+	git clone https://github.com/NicolasRTT/dotfiles.git ~/dotfiles
+	cd ~/dotfiles
 	# add symlink for every dotfile
 
 	symlinkDotfile .bashrc
