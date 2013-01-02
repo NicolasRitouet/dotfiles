@@ -35,6 +35,7 @@ menu() {
 	    case "$REPLY" in
 	        1) # Copy dotfiles
 				copyDotfile .bashrc
+				copyDotfile .bash_profile
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
@@ -200,6 +201,7 @@ cloneDotfiles() {
 	# add symlink for every dotfile
 
 	symlinkDotfile .bashrc
+	symlinkDotfile .bash_profile
 	symlinkDotfile .bash_aliases
 	symlinkDotfile .vimrc
 	symlinkDotfile .tmux.conf
