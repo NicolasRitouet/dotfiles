@@ -132,7 +132,13 @@ installBashit() {
 	fi
 	# copy my own dotfiles to the custom dir of bash-it
 	mkdir -p ${HOME}/.bash_it/custom/aliases/
-	cp .bash_aliases ${HOME}/.bash_it/custom/aliases/custom.aliases.bash
+	cp .bash_aliases ${HOME}/.bash_it/aliases/custom.aliases.bash
+	if [ $? -gt 0 ]	# What did last command return ?
+	then
+		sad_print "Copy of .bash_aliases to ${HOME}/.bash_it/aliases/custom.aliases.bash" "fail!"
+	else
+		happy_print "Copy of .bash_aliases to ${HOME}/.bash_it/aliases/custom.aliases.bash" "Success"
+	fi
 	# exec bash-it
 	~/.bash_it/install.sh
 }
