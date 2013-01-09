@@ -57,12 +57,13 @@ menuRoot() {
 	options=("Update && upgrade your debian" #1
 		"Create a new user" #2
 		"Disable root login from SSH" #3
-		"Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #4
-		"Install Git, clone dotfiles and symlink" #5
-		"Install Yeoman environment (node.js, ruby, etc...)" #6
-		"Install Sublime-text2 and copy Sublime-settings" #7
-		"Install extras" #8
-		"Create SSH Key for Github" #9
+		"Install bash-it and custom alias" #4
+		"Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #5
+		"Install Git, clone dotfiles and symlink" #6
+		"Install Yeoman environment (node.js, ruby, etc...)" #7
+		"Install Sublime-text2 and copy Sublime-settings" #8
+		"Install extras" #9
+		"Create SSH Key for Github" #10
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
@@ -75,28 +76,31 @@ menuRoot() {
 	       3) # Disable root
 	            configure_sshroot
 	            ;;
-	        4) # Copy dotfiles
+	        4) # Install bash-it
+				installBashit
+				;;
+	        5) # Copy dotfiles
 				copyDotfile .bashrc
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
 				copyDotfile .gitconfig
 				;;
-			5) # Clone dotfiles
+			6) # Clone dotfiles
 				cloneDotfiles
 				;;
-			6) # Install yeoman
+			7) # Install yeoman
 				installYeoman
 
 				;;
-			7) # Install Sublime-text2 and copy settings
+			8) # Install Sublime-text2 and copy settings
 				installSublimeText
 				copySublimeDotFiles
 				;;
-			8) # Install extras
+			9) # Install extras
 				install_extra
 				;;
-			9) # Create github SSH Key
+			10) # Create github SSH Key
 				ask "Work in progress, no working currently"
 				# createSSHKey
 				;;
@@ -109,6 +113,28 @@ menuRoot() {
 	        *) echo invalid option;;
 	    esac
 	done
+}
+
+
+installBashit() {
+	e_arrow "Installing Bash-it"
+	# clone bash-it
+	if [ -d ~/.bash_it ]; then
+		e_arrow "Bash-it already cloned"
+	else
+		git clone http://github.com/revans/bash-it.git ~/.bash_it
+		if [ $? -gt 0 ]	# What did last command return ?
+		then
+			sad_print "Clone of bash-it" "fail!"
+		else
+			happy_print "Clone of bash-it" "Success"
+		fi
+	fi
+	# copy my own dotfiles to the custom dir of bash-it
+	mkdir -p ${HOME}/.bash_it/custom/aliases/
+	cp .bash_alias ${HOME}/.bash_it/custom/aliases/custom.aliases.bash
+	# exec bash-it
+	~/.bash_it/install.sh
 }
 
 
