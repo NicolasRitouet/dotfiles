@@ -132,7 +132,7 @@ installBashit() {
 	fi
 	# copy my own dotfiles to the custom dir of bash-it
 	mkdir -p ${HOME}/.bash_it/custom/aliases/
-	cp .bash_alias ${HOME}/.bash_it/custom/aliases/custom.aliases.bash
+	cp .bash_aliases ${HOME}/.bash_it/custom/aliases/custom.aliases.bash
 	# exec bash-it
 	~/.bash_it/install.sh
 }
