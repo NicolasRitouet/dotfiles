@@ -3,7 +3,7 @@
 ## Install
 Run this:
 
-    wget -O install.tar.gz http://github.com/NicolasRTT/dotfiles/tarball/master; tar zxvf *.gz; cd *dotfiles*; sudo ./install.sh
+    wget -O install.tar.gz http://github.com/NicolasRTT/dotfiles/tarball/master --no-check-certificate; tar zxvf *.gz; cd *dotfiles*; sudo ./install.sh
 
 ## Session Duration Setup (for aliases)
 Run this:
