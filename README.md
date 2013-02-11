@@ -24,6 +24,8 @@ Run this:
 
 
 ## Todo
+- add .bash_profile in .bashrc
+- Change SSH port
 - Fix compass installation (Gem not in the path? $PATH:/var/lib/gems/1.8/bin)
 - Fix SSH generation problem (copy the public key in the right place?)
 - Rollback if password error while creating a user
