@@ -342,7 +342,7 @@ installSublimeText() {
 # Install package, check if successfull and display fail or success
 installPackage() {
 	while [ ${#} -gt 0 ]; do
-		INSTALLED=$(dpkg -l | grep $1)
+		INSTALLED=$(dpkg -l | grep "$1 ")
 		if [ "$INSTALLED" != "" ]; then
 			happy_print "Package $1 already installed!"
 		else
