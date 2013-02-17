@@ -63,6 +63,8 @@ alias install='sudo apt-get install '
 alias pbcopy='xclip -selection clipboard '
 
 alias sublime='sublime-text-2 '
+# Sublime-text 3
+alias sub='/opt/sublime_text/sublime_text '
 
 
 ##################
