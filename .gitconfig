@@ -4,3 +4,6 @@
 	last = log --oneline -n 1
 	cp = cherry-pick
 	hist = log --oneline --graph --decorate --all
+[user]
+        name = NicolasRTT
+        email = nicolas@ritouet.com
