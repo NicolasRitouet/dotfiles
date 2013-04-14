@@ -48,6 +48,11 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+# Path management.
+if [ -f ~/.bashpath ]; then
+    . ~/.bashpath
+fi
+
 # Not needed yet, maybe later:
 # if [ -f ~/.preexec.bash ]; then
 #    . ~/.preexec.bash

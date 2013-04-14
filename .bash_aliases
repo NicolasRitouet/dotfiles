@@ -60,11 +60,13 @@ alias path='echo -e ${PATH//:/\\n}'
 alias h='history | grep '
 
 alias install='sudo apt-get install '
-alias pbcopy='xclip -selection clipboard '
 
 alias sublime='sublime-text-2 '
 # Sublime-text 3
 alias sub='/opt/sublime_text/sublime_text '
+
+# less > more
+alias more='less'
 
 
 ##################

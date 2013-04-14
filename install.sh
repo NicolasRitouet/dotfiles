@@ -56,6 +56,8 @@ menuDev() {
 	        1) # Copy dotfiles
 				copyDotfile .bashrc
 				copyDotfile .zork.theme.bash
+				copyDotfile .bash_profile
+				copyDotfile .bashpath
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
@@ -98,6 +100,8 @@ menuServer() {
 	        4) # Copy dotfiles
 				copyDotfile .bashrc
 				copyDotfile .zork.theme.bash
+				copyDotfile .bash_profile
+				copyDotfile .bashpath
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
@@ -127,6 +131,7 @@ menuNotRoot() {
 				copyDotfile .bashrc
 				copyDotfile .zork.theme.bash
 				copyDotfile .bash_profile
+				copyDotfile .bashpath
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
@@ -168,6 +173,7 @@ cloneDotfiles() {
 	symlinkDotfile .bashrc
 	symlinkDotfile .zork.theme.bash
 	symlinkDotfile .bash_profile
+	symlinkDotfile .bashpath
 	symlinkDotfile .bash_aliases
 	symlinkDotfile .vimrc
 	symlinkDotfile .tmux.conf
@@ -224,7 +230,9 @@ installDevTools() {
 	add-apt-repository ppa:natecarlson/maven3
 	apt-get -q -y update
 	apt-get -y install maven3
-	mvn>/dev/null
+	echo -e "PATH=$PATH:/usr/share/maven3/bin/mvn" >> ~/.bashpath
+	/usr/share/maven3/bin/mvn>/dev/null
+	# TODO: Add mvn in classpath:  in .bashrc
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		e_error "Maven install" "fail!"
