@@ -223,7 +223,7 @@ installDevTools() {
 	e_arrow "Install Maven 3..."
 	add-apt-repository ppa:natecarlson/maven3
 	apt-get -q -y update
-	apt-get -y install maven
+	apt-get -y install maven3
 	mvn>/dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
