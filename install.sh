@@ -143,13 +143,8 @@ menuNotRoot() {
 	done
 }
 
-
-link_files () {
-  ln -s $1 $2
-  e_success "linked $1 to $2"
-}
-
-copyDotBash() {
+# Copy the dotfiles in $HOME
+copyDotfiles() {
 	BASHFILES_ROOT="`pwd`/bash"
 	echo $BASHFILES_ROOT
  	for source in `find $BASHFILES_ROOT -maxdepth 2 -name \*`
@@ -157,6 +152,26 @@ copyDotBash() {
   		echo $source
   		# symlinkDotfile $source
   	done
+}
+
+# clone the repository and symlink the dotfiles in $HOME
+cloneDotfiles() {
+	if git --version &> /dev/null ; then
+		e_success "GIT already installed"
+	else
+		installPackage git-core
+	fi
+	git clone https://github.com/NicolasRTT/dotfiles.git ~/.dotfiles
+	cd ~/.dotfiles
+	# add symlink for every dotfile
+
+	symlinkDotfile .bashrc
+	symlinkDotfile .zork.theme.bash
+	symlinkDotfile .bash_profile
+	symlinkDotfile .bash_aliases
+	symlinkDotfile .vimrc
+	symlinkDotfile .tmux.conf
+	symlinkDotfile .gitconfig
 }
 
 # Install dev Packages Defined In File extra
@@ -179,7 +194,7 @@ installDevTools() {
 	# Install Ruby
 	e_arrow "Install Ruby..."
 	\curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby
-	e_success "Ruby Installed (or not)..."
+	e_success "Ruby Installed (or not)..."	
 
 	# Install yeoman
 	e_arrow "Install Yeoman..."
@@ -195,6 +210,7 @@ installDevTools() {
 	apt-get -y install oracle-java7-installer
 	echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment;
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle/
+	# Set the path in a bash.path file ?
 	java>/dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
@@ -207,7 +223,7 @@ installDevTools() {
 	e_arrow "Install Maven 3..."
 	add-apt-repository ppa:natecarlson/maven3
 	apt-get -q -y update
-	apt-get -y install maven3
+	apt-get -y install maven
 	mvn>/dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
@@ -217,70 +233,7 @@ installDevTools() {
 	fi
 }
 
-installYeoman() {
-	e_arrow "Install Yeoman"
-	# Thx http://ericterpstra.com/2012/10/install-yeoman-and-all-its-dependencies-in-ubuntu-linux/
-	installPackage curl
 
-# Install Git
-	installPackage git-core
-
-# Install Node.js and NPM
-	installPackage python-software-properties # Needed to call add-apt-repository
-	add-apt-repository ppa:chris-lea/node.js
-	apt-get update > /dev/null
-	installPackage nodejs npm
-
-# Install RVM & Ruby
-	installPackage build-essential
-	curl -L get.rvm.io | bash -s stable
-	# Not needed anymore, add the PATH=$PATH:/usr/local/bin in .bashrc
-	# echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
-	# source "$HOME/.rvm/scripts/rvm"
-	# sudo ln -s /usr/local/rvm/bin /usr/local/bin/rvm
-	installPackage openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
-	rvm install 1.9.3
-	rvm use 1.9.3 
-	rvm --default use 1.9.3-p194
-
-# Install compass
-	gem update --system
-	gem install compass
-
-# Install PhantomJS
-	wget http://phantomjs.googlecode.com/files/phantomjs-1.7.0-linux-x86_64.tar.bz2
-	sudo tar xvf phantomjs-1.7.0-linux-x86_64.tar.bz2 -C /usr/local/share
-	sudo ln -s /usr/local/share/phantomjs-1.7.0-linux-x86_64/ /usr/local/share/phantomjs
-	sudo ln -s /usr/local/share/phantomjs/bin/phantomjs /usr/local/bin/phantomjs
-	phantomjs --version
-	rm ~/phantomjs-1.7.0-linux-x86_64.tar.bz2
-# Install JPEGTRAN / OptiPNG
-	installPackage libjpeg-turbo-progs optipng
-# Install Yeoman !!! :)
-	npm install -g yeoman
-	echo -e "Check with: \n curl -L get.yeoman.io | bash"
-
-
-}
-
-cloneDotfiles() {
-	if git --version &> /dev/null ; then
-		e_success "GIT already installed"
-	else
-		installPackage git-core
-	fi
-	git clone https://github.com/NicolasRTT/dotfiles.git ~/.dotfiles
-	cd ~/.dotfiles
-	# add symlink for every dotfile
-
-	symlinkDotfile .bashrc
-	symlinkDotfile .zork.theme.bash
-	symlinkDotfile .bash_profile
-	symlinkDotfile .bash_aliases
-	symlinkDotfile .vimrc
-	symlinkDotfile .tmux.conf
-	symlinkDotfile .gitconfig
-}
 
 updateAndUpgrade() {
 	e_arrow "Updating ..."
