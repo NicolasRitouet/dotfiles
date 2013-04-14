@@ -1,4 +1,4 @@
-python-software-properties
+software-properties-common
 git-core
 subversion
 mercurial
