@@ -170,7 +170,7 @@ installDevTools() {
 	# Clean Cached Packages
 	apt-get clean
 	# Install node.js
-	add-apt-repository -y ppa:chris-lea/node.js
+	add-apt-repository ppa:chris-lea/node.js
 	apt-get -q -y update
 	installPackage nodejs npm
 
@@ -186,7 +186,7 @@ installDevTools() {
 
 
 	# Install java  oracle
-	add-apt-repository -y ppa:webupd8team/java
+	add-apt-repository ppa:webupd8team/java
 	apt-get -q -y update
 	sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 	apt-get -y install oracle-java7-installer
