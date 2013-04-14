@@ -171,6 +171,7 @@ installDevTools() {
 	# Clean Cached Packages
 	apt-get clean
 	# Install node.js
+	e_arrow "Installing Node.js"
 	add-apt-repository ppa:chris-lea/node.js
 	apt-get -q -y update
 	installPackage nodejs npm
@@ -187,6 +188,7 @@ installDevTools() {
 
 
 	# Install java  oracle
+	e_arrow "Install Java..."
 	add-apt-repository ppa:webupd8team/java
 	apt-get -q -y update
 	sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
@@ -199,6 +201,19 @@ installDevTools() {
 		e_error "Java install" "fail!"
 	else
 		e_success "Java install" "Success"
+	fi
+
+	# Install Maven 3
+	e_arrow "Install Maven 3..."
+	add-apt-repository ppa:natecarlson/maven3
+	apt-get -q -y update
+	apt-get -y install maven3
+	mvn>/dev/null
+	if [ $? -gt 0 ]	# What did last command return ?
+	then
+		e_error "Maven install" "fail!"
+	else
+		e_success "Maven install" "Success"
 	fi
 }
 
