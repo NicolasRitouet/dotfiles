@@ -161,6 +161,7 @@ copyDotBash() {
 
 # Install dev Packages Defined In File extra
 installDevTools() {
+	apt-get -q -y update
 	e_arrow "Installing Dev tools"
 	# Loop Through Package List
 	while read package; do
