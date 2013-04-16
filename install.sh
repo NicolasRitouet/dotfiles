@@ -232,7 +232,7 @@ installDevTools() {
 	e_arrow "Install Maven ..."
 	apt-get -y install maven
 	echo -e "PATH=$PATH:/usr/bin/mvn" >> ~/.bashpath
-	/usr/bin/mvn>/dev/null
+	/usr/bin/mvn -v > /dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		e_error "Maven install" "fail!"
