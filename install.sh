@@ -6,12 +6,12 @@
 
 
 # Extra logs methods
-function ask() { echo -e -n " [1;32m☆ $1 [0m\n"; }
+ask() { echo -e -n " [1;32m☆ $1 [0m\n"; }
 
-function e_header()   { echo -e "\n\033[1m$@\033[0m"; }
-function e_success()  { echo -e " \033[1;32m✔\033[0m  $@"; }
-function e_error()    { echo -e " \033[1;31m✖\033[0m  $@"; }
-function e_arrow()    { echo -e " \033[1;33m➜\033[0m  $@"; }
+e_header()   { echo -e "\n\033[1m$@\033[0m"; }
+e_success()  { echo -e " \033[1;32m✔\033[0m  $@"; }
+e_error()    { echo -e " \033[1;31m✖\033[0m  $@"; }
+e_arrow()    { echo -e " \033[1;33m➜\033[0m  $@"; }
 
 e_header "Setup your Fresh Linux Box\n"
 
