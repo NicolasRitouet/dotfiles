@@ -193,13 +193,14 @@ installDevTools() {
 	apt-get clean
 	# Install node.js
 	e_arrow "Installing Node.js"
+	# if add-apt-repository > ??, then, add argument -y
 	add-apt-repository ppa:chris-lea/node.js
 	apt-get -q -y update
 	installPackage nodejs npm
 
 	# Install Ruby
 	e_arrow "Install Ruby..."
-	\curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby
+	/usr/bin/curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby
 	e_success "Ruby Installed (or not)..."	
 
 	# Install yeoman
@@ -210,14 +211,16 @@ installDevTools() {
 
 	# Install java  oracle
 	e_arrow "Install Java..."
+	# if add-apt-repository > ??, then, add argument -y
 	add-apt-repository ppa:webupd8team/java
 	apt-get -q -y update
 	sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 	apt-get -y install oracle-java7-installer
 	echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment;
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle/
+	echo -e "JAVA_HOME=/usr/lib/jvm/java-7-oracle/" >> ~/.bashpath
 	# Set the path in a bash.path file ?
-	java>/dev/null
+	java -version > /dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		e_error "Java install" "fail!"
@@ -225,14 +228,11 @@ installDevTools() {
 		e_success "Java install" "Success"
 	fi
 
-	# Install Maven 3
-	e_arrow "Install Maven 3..."
-	add-apt-repository ppa:natecarlson/maven3
-	apt-get -q -y update
-	apt-get -y install maven3
-	echo -e "PATH=$PATH:/usr/share/maven3/bin/mvn" >> ~/.bashpath
-	/usr/share/maven3/bin/mvn>/dev/null
-	# TODO: Add mvn in classpath:  in .bashrc
+	# Install Maven
+	e_arrow "Install Maven ..."
+	apt-get -y install maven
+	echo -e "PATH=$PATH:/usr/bin/mvn" >> ~/.bashpath
+	/usr/bin/mvn>/dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		e_error "Maven install" "fail!"
