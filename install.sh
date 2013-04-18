@@ -57,6 +57,7 @@ menuDev() {
 				copyDotfile .bashrc
 				copyDotfile .zork.theme.bash
 				copyDotfile .bash_profile
+				copyDotfile .inputrc
 				copyDotfile .bashpath
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
@@ -102,6 +103,7 @@ menuServer() {
 				copyDotfile .zork.theme.bash
 				copyDotfile .bash_profile
 				copyDotfile .bashpath
+				copyDotfile .inputrc
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
@@ -132,6 +134,7 @@ menuNotRoot() {
 				copyDotfile .zork.theme.bash
 				copyDotfile .bash_profile
 				copyDotfile .bashpath
+				copyDotfile .inputrc
 				copyDotfile .bash_aliases
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
@@ -173,6 +176,7 @@ cloneDotfiles() {
 	symlinkDotfile .bashrc
 	symlinkDotfile .zork.theme.bash
 	symlinkDotfile .bash_profile
+	symlinkDotfile .inputrc
 	symlinkDotfile .bashpath
 	symlinkDotfile .bash_aliases
 	symlinkDotfile .vimrc
