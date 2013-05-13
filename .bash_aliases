@@ -65,6 +65,9 @@ alias sublime='sublime-text-2 '
 # Sublime-text 3
 alias sub='/opt/sublime_text/sublime_text '
 
+# Simple Web server
+alias webserver='python -m SimpleHTTPServer 8000'
+
 # less > more
 alias more='less'
 
