@@ -1,9 +1,13 @@
-# Setup a fresh linux box
+# Setup a fresh *nux box
 
-## Install
+## Install on Linux
 Run this:
 
-    wget -O install.tar.gz http://github.com/NicolasRTT/dotfiles/tarball/master --no-check-certificate; tar zxvf *.gz; cd *dotfiles*; sudo ./install.sh
+    wget -O install.tar.gz http://github.com/NicolasRTT/dotfiles/tarball/master --no-check-certificate; tar zxvf install.tar.gz; cd *dotfiles*; sudo ./install.sh
+
+## Install on Mac
+Run this:
+    curl -L http://github.com/NicolasRTT/dotfiles/tarball/master -o install.tar.gz; tar zxvf install.tar.gz; cd *dotfiles*; sudo ./install.sh
 
 ## Session Duration Setup (for aliases)
 Run this:
