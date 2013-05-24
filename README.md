@@ -1,4 +1,4 @@
-# Setup a fresh *nux box
+# Setup a fresh Unix-based (Linux + OSX) box
 
 ## Install on Linux
 Run this:
