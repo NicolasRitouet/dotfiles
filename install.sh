@@ -180,6 +180,7 @@ installNodeJsYeoman() {
 	fi
 	# Install NPM
 	e_arrow "Installing NPM"
+	. ~/.bashrc
 	curl https://npmjs.org/install.sh | sh
 	# Install yeoman
 	e_arrow "Installing Yeoman"
