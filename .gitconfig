@@ -5,5 +5,5 @@
 	cp = cherry-pick
 	hist = log --oneline --graph --decorate --all
 [user]
-        name = NicolasRTT
-        email = nicolas@ritouet.com
+        name = NicolasRitouet
+        email = nico2706@gmail.com
