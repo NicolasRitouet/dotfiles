@@ -16,16 +16,14 @@ e_arrow()    { echo -e " \033[1;33m➜\033[0m  $@"; }
 e_header "Setup your Fresh Linux Box\n"
 
 # Check if root privileges
-if [ "$(whoami)" != "root" ]; then
-	e_arrow "Calling this script with user '$(whoami)'"
-	e_arrow "This script is limited since it wasn't called with root-level privileges."
-	e_arrow "To get the full functionnality, please type the following:"
-	e_arrow "sudo ./${0##*/}"
-	echo -e "\n"
+if [ "$(whoami)" == "root" ]; then
+	e_arrow "Actually, you shouldn't call this script with sudo, because it will break all the permissions on the copied files."
+	e_arrow "if root is needed, we'll ask you!"
+	exit 0
+	break
 fi
 
-# Menu if root privileges
-menuRoot() {
+launchMainMenu() {
 	PS3="Is this a [s]erver or a [d]eveloper workstation ?"
 	otpions=("Developer Box", "Server Box")
 	select opt in "${options[@]}"  "Quit"; do
@@ -48,8 +46,12 @@ menuRoot() {
 # sub-menu for a dev workstation
 menuDev() {
 	PS3="Developer Box: please enter your choice:"
-	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, sublime-text)" #1
-		"Install Developer tools (git, svn, hg, maven, yeoman, nodejs, java7, etc..." #2
+	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .zork.theme.bash, etc...)" #1
+		"Clone dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .zork.theme.bash, etc...)" #2
+		"@(sudo) Install utilities (git-core, vim, mtr, bwm-ng, curl, htop, unrar, unzip, zip, tmux)" #3
+		"Install NodeJS and NPM (without sudo) and yeoman" #4
+		"@(sudo) Install Java 7" #5
+		"@(sudo) Install Maven (not sure if this works everywhere)" #6
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
@@ -64,8 +66,20 @@ menuDev() {
 				copyDotfile .tmux.conf
 				copyDotfile .gitconfig
 				;;
-			2) # Install dev tools
-				installDevTools
+	        2) # Clone dotfiles
+				cloneDotfiles
+				;;
+			3) # Install utilities
+				installUtilities
+				;;
+			4) # Install NodeJS
+				installNodeJsYeoman
+				;;
+			4) # Install Java
+				installJava
+				;;
+			4) # Install Maven
+				installMaven
 				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
@@ -123,44 +137,6 @@ menuServer() {
 	done
 }
 
-menuNotRoot() {
-	PS3="Please enter your choice:"
-	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #1
-	)
-	select opt in "${options[@]}"  "Quit"; do
-	    case "$REPLY" in
-	        1) # Copy dotfiles
-				copyDotfile .bashrc
-				copyDotfile .zork.theme.bash
-				copyDotfile .bash_profile
-				copyDotfile .bashpath
-				copyDotfile .inputrc
-				copyDotfile .bash_aliases
-				copyDotfile .vimrc
-				copyDotfile .tmux.conf
-				copyDotfile .gitconfig
-				;;
-	        $(( ${#options[@]}+1 )) )
-				echo "If you made some bash changes, don't forget to reload after leaving:"
-				echo ". ~/.bashrc";
-				exit 0
-	            break
-	            ;;
-	        *) echo invalid option;;
-	    esac
-	done
-}
-
-# Copy the dotfiles in $HOME
-copyDotfiles() {
-	BASHFILES_ROOT="`pwd`/bash"
-	echo $BASHFILES_ROOT
- 	for source in `find $BASHFILES_ROOT -maxdepth 2 -name \*`
-  	do
-  		echo $source
-  		# symlinkDotfile $source
-  	done
-}
 
 # clone the repository and symlink the dotfiles in $HOME
 cloneDotfiles() {
@@ -169,7 +145,7 @@ cloneDotfiles() {
 	else
 		installPackage git-core
 	fi
-	git clone https://github.com/NicolasRTT/dotfiles.git ~/.dotfiles
+	git clone https://github.com/NicolasRitouet/dotfiles.git ~/.dotfiles
 	cd ~/.dotfiles
 	# add symlink for every dotfile
 
@@ -184,10 +160,43 @@ cloneDotfiles() {
 	symlinkDotfile .gitconfig
 }
 
-# Install dev Packages Defined In File extra
-installDevTools() {
+
+installNodeJsYeoman() {
+	e_arrow "Installing NodeJs"
+	# Install nodeJS
+	echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashpath
+	installPackage build-essential g++ curl
+	mkdir ~/local
+	mkdir ~/node-latest-install
+	cd ~/node-latest-install
+	curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
+	./configure --prefix=~/local
+	make install
+	if [ $? -gt 0 ]	# What did last command return ?
+	then
+		e_error "NodeJS install" "failed!"
+	else
+		e_success "NodeJS install" "Success"
+	fi
+	# Install NPM
+	e_arrow "Installing NPM"
+	curl https://npmjs.org/install.sh | sh
+	# Install yeoman
+	e_arrow "Installing Yeoman"
+	npm install -g yo
+	# and the angular generator
+	npm install -g generator-angular
+
+	# Install Ruby
+	#e_arrow "Install Ruby..."
+	#/usr/bin/curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby
+	#e_success "Ruby Installed (or not)..."	
+}
+
+# Install Utilities Defined In File "extra"
+installUtilities() {
+	e_arrow "Installing utilities"
 	apt-get -q -y update
-	e_arrow "Installing Dev tools"
 	# Loop Through Package List
 	while read package; do
 		# Install Currently Selected Package
@@ -195,26 +204,14 @@ installDevTools() {
 	done < devTools
 	# Clean Cached Packages
 	apt-get clean
-	# Install node.js
-	e_arrow "Installing Node.js"
-	# if add-apt-repository > ??, then, add argument -y
-	add-apt-repository ppa:chris-lea/node.js
-	apt-get -q -y update
-	installPackage nodejs npm
+}
 
-	# Install Ruby
-	e_arrow "Install Ruby..."
-	/usr/bin/curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby
-	e_success "Ruby Installed (or not)..."	
 
-	# Install yeoman
-	e_arrow "Install Yeoman..."
-	npm install -g yo grunt-cli bower generator-angular generator-karma
-	e_success "Yeoman Installed (or not)..."
+installJava() {
 
 
 	# Install java  oracle
-	e_arrow "Install Java..."
+	e_arrow "Install Java 7 from webupd8team..."
 	# if add-apt-repository > ??, then, add argument -y
 	add-apt-repository ppa:webupd8team/java
 	apt-get -q -y update
@@ -231,6 +228,9 @@ installDevTools() {
 	else
 		e_success "Java install" "Success"
 	fi
+}
+
+installMaven() {
 
 	# Install Maven
 	e_arrow "Install Maven ..."
@@ -246,7 +246,6 @@ installDevTools() {
 }
 
 
-
 updateAndUpgrade() {
 	e_arrow "Updating ..."
     	apt-get update > /dev/null
@@ -256,17 +255,6 @@ updateAndUpgrade() {
 	e_success "apt-get upgrade" "successful"
 }
 
-# Install Extra Packages Defined In File extra
-install_extra() {
-	e_arrow "Installing extra"
-	# Loop Through Package List
-	while read package; do
-		# Install Currently Selected Package
-		installPackage $package
-	done < extra
-	# Clean Cached Packages
-	apt-get clean
-}
 
 # Add User Account
 configure_user() {
@@ -345,9 +333,4 @@ installPackage() {
 }
 
 # Launch menu
-if [ "$(whoami)" = "root" ]
-then
-	menuRoot
-else
-	menuNotRoot
-fi
+launchMainMenu
