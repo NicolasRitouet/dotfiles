@@ -196,14 +196,14 @@ installNodeJsYeoman() {
 # Install Utilities Defined In File "extra"
 installUtilities() {
 	e_arrow "Installing utilities"
-	apt-get -q -y update
+	sudo apt-get -q -y update
 	# Loop Through Package List
 	while read package; do
 		# Install Currently Selected Package
 		installPackage $package
 	done < devTools
 	# Clean Cached Packages
-	apt-get clean
+	sudo apt-get clean
 }
 
 
@@ -213,11 +213,11 @@ installJava() {
 	# Install java  oracle
 	e_arrow "Install Java 7 from webupd8team..."
 	# if add-apt-repository > ??, then, add argument -y
-	add-apt-repository ppa:webupd8team/java
-	apt-get -q -y update
+	sudo add-apt-repository ppa:webupd8team/java
+	sudo apt-get -q -y update
 	sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-	apt-get -y install oracle-java7-installer
-	echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment;
+	sudo apt-get -y install oracle-java7-installer
+	sudo echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment;
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle/
 	echo -e "JAVA_HOME=/usr/lib/jvm/java-7-oracle/" >> ~/.bashpath
 	# Set the path in a bash.path file ?
@@ -234,7 +234,7 @@ installMaven() {
 
 	# Install Maven
 	e_arrow "Install Maven ..."
-	apt-get -y install maven
+	sudo apt-get -y install maven
 	echo -e "PATH=$PATH:/usr/bin/mvn" >> ~/.bashpath
 	/usr/bin/mvn -v > /dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
@@ -248,10 +248,10 @@ installMaven() {
 
 updateAndUpgrade() {
 	e_arrow "Updating ..."
-    	apt-get update > /dev/null
+    	sudo apt-get update > /dev/null
 	e_success "apt-get update" "successful"
 	e_arrow "Upgrading ..."
-	apt-get upgrade -y > /dev/null
+	sudo apt-get upgrade -y > /dev/null
 	e_success "apt-get upgrade" "successful"
 }
 
@@ -315,7 +315,7 @@ symlinkDotfile() {
 # Install package, check if successfull and display fail or success
 installPackage() {
 	while [ ${#} -gt 0 ]; do
-		INSTALLED=$(dpkg -l | grep "$1 ")
+		INSTALLED=$(dpkg -l | grep " $1 ")
 		if [ "$INSTALLED" != "" ]; then
 			e_success "Package $1 already installed!"
 		else
