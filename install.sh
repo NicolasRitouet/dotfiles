@@ -70,16 +70,16 @@ menuDev() {
 				cloneDotfiles
 				;;
 			3) # Install utilities
-				installUtilities
+				sudo installUtilities
 				;;
 			4) # Install NodeJS
 				installNodeJsYeoman
 				;;
 			4) # Install Java
-				installJava
+				sudo installJava
 				;;
 			4) # Install Maven
-				installMaven
+				sudo installMaven
 				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
@@ -95,8 +95,8 @@ menuDev() {
 
 menuServer() {
 	PS3="Server Box: please enter your choice:"
-	options=("Update && upgrade your debian" #1
-		"Create a new user" #2
+	options=("@(sudo) Update && upgrade your debian" #1
+		"@(sudo) Create a new user" #2
 		"Disable root login from SSH" #3
 		"Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #4
 		"Install extras" #5
