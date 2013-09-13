@@ -75,10 +75,10 @@ menuDev() {
 			4) # Install NodeJS
 				installNodeJsYeoman
 				;;
-			4) # Install Java
+			5) # Install Java
 				installJava
 				;;
-			4) # Install Maven
+			6) # Install Maven
 				installMaven
 				;;
 	        $(( ${#options[@]}+1 )) )
