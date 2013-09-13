@@ -162,10 +162,13 @@ cloneDotfiles() {
 
 
 installNodeJsYeoman() {
+	
+	installPackage build-essential g++ curl
+	
 	e_arrow "Installing NodeJs"
 	# Install nodeJS
+	export PATH=$HOME/local/bin:$PATH
 	echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashpath
-	installPackage build-essential g++ curl
 	mkdir ~/local
 	mkdir ~/node-latest-install
 	cd ~/node-latest-install
@@ -180,7 +183,6 @@ installNodeJsYeoman() {
 	fi
 	# Install NPM
 	e_arrow "Installing NPM"
-	. ~/.bashrc
 	curl https://npmjs.org/install.sh | sh
 	# Install yeoman
 	e_arrow "Installing Yeoman"
