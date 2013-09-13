@@ -70,16 +70,16 @@ menuDev() {
 				cloneDotfiles
 				;;
 			3) # Install utilities
-				sudo installUtilities
+				installUtilities
 				;;
 			4) # Install NodeJS
 				installNodeJsYeoman
 				;;
 			4) # Install Java
-				sudo installJava
+				installJava
 				;;
 			4) # Install Maven
-				sudo installMaven
+				installMaven
 				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
@@ -320,7 +320,7 @@ installPackage() {
 			e_success "Package $1 already installed!"
 		else
 			e_arrow "Installing package $1"
-			apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
+			sudo apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
 			if [ $? -gt 0 ]	# What did last command return ?
 			then
 				e_error "Install of $1" "FAIL"
