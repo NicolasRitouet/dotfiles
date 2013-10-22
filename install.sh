@@ -168,7 +168,7 @@ installNodeJsYeoman() {
 	e_arrow "Installing NodeJs"
 	# Install nodeJS
 	export PATH=$HOME/local/bin:$PATH
-	echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashpath
+#	echo '\n\nexport PATH=$HOME/local/bin:$PATH' >> ~/.bashpath
 	mkdir ~/local
 	mkdir ~/node-latest-install
 	cd ~/node-latest-install
