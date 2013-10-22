@@ -104,7 +104,7 @@ menuServer() {
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
 	        1) # Update && upgrade debian
-				updateAndUpgrade
+			updateAndUpgrade
 	            ;;
 	        2) # Create a user
 	            configure_user
@@ -113,19 +113,19 @@ menuServer() {
 	            configure_sshroot
 	            ;;
 	        4) # Copy dotfiles
-				copyDotfile .bashrc
-				copyDotfile .zork.theme.bash
-				copyDotfile .bash_profile
-				copyDotfile .bashpath
-				copyDotfile .inputrc
-				copyDotfile .bash_aliases
-				copyDotfile .vimrc
-				copyDotfile .tmux.conf
-				copyDotfile .gitconfig
-				;;
-			5) # Install extras
-				install_extra
-				;;
+			copyDotfile .bashrc
+			copyDotfile .zork.theme.bash
+			copyDotfile .bash_profile
+			copyDotfile .bashpath
+			copyDotfile .inputrc
+			copyDotfile .bash_aliases
+			copyDotfile .vimrc
+			copyDotfile .tmux.conf
+			copyDotfile .gitconfig
+			;;
+		5) # Install extras
+			install_extra
+			;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
 				echo ". ~/.bashrc";
@@ -235,17 +235,22 @@ installJava() {
 
 installMaven() {
 
-	# Install Maven
-	e_arrow "Install Maven ..."
-	sudo apt-get -y install maven
-	echo -e "PATH=$PATH:/usr/bin/mvn" >> ~/.bashpath
-	/usr/bin/mvn -v > /dev/null
-	if [ $? -gt 0 ]	# What did last command return ?
-	then
-		e_error "Maven install" "fail!"
-	else
-		e_success "Maven install" "Success"
-	fi
+
+	e_arrow "Install maven 3.1.1 from binary..."
+	wget http://mirror3.layerjet.com/apache/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz
+	tar xzf apache-maven-3.1.1-bin.tar.gz
+	sudo mv apache-maven-3.1.1 /usr/local
+	sudo ln -s /usr/local/apache-maven-3.1.1 /usr/local/maven
+
+	e_arrow "Registering Maven Path..."
+	export M2_HOME=/usr/local/maven
+	export M2=$M2_HOME/bin
+	export PATH=$M2:$PATH
+
+	e_arrow "Install path in bashpath ..."
+	echo -e "M2_HOME=/usr/local/maven" >> ~/.bashpath
+	echo -e "M2=$M2_HOME/bin" >> ~/.bashpath
+	echo -e "PATH=$M2:$PATH" >> ~/.bashpath
 }
 
 
