@@ -52,6 +52,7 @@ menuDev() {
 		"Install NodeJS and NPM (without sudo) and yeoman" #4
 		"@(sudo) Install Java 7" #5
 		"@(sudo) Install Maven (not sure if this works everywhere)" #6
+		"@(sudo) Install Play 2.2.0" #6
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
@@ -80,6 +81,9 @@ menuDev() {
 				;;
 			6) # Install Maven
 				installMaven
+				;;
+			7) # Install Play! Framework
+				installPlay
 				;;
 	        $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
@@ -253,6 +257,17 @@ installMaven() {
 	echo -e "M2_HOME=/usr/local/maven" >> ~/.bashpath
 	echo -e "M2=$M2_HOME/bin" >> ~/.bashpath
 	echo -e "PATH=$M2:$PATH" >> ~/.bashpath
+}
+
+installPlay() {
+	
+	e_arrow "Install Play! Framework 2.2.0..."
+	wget http://downloads.typesafe.com/play/2.2.0/play-2.2.0.zip
+	unzip play-2.2.0.zip
+	sudo mv play-2.2.0 /opt
+	sudo ln -s /opt/play-2.2.0 /opt/play
+	sudo ln -s /opt/play/play /usr/local/bin/play
+	
 }
 
 
