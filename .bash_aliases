@@ -43,6 +43,9 @@ alias rm='rm -I --preserve-root'
 # This is GOLD for finding out what is taking so much space on your drives!
 alias diskspace="du -S | sort -n -r |more"
 
+# Search inside files
+alias searchFiles=sh\ -c\ \''find . -name \*.* -type f -print0 | xargs -0 grep --color -Hn "$1"'\'\ -
+
 # Show me the size (sorted) of only the folders in this directory
 alias folders="find . -maxdepth 1 -type d -print | xargs du -sk | sort -rn"
 
