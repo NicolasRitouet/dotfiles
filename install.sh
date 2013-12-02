@@ -18,9 +18,8 @@ e_header "Setup your Fresh Linux Box\n"
 # Check if root privileges
 if [ "$(whoami)" == "root" ]; then
 	e_arrow "Actually, you shouldn't call this script with sudo, because it will break all the permissions on the copied files."
-	e_arrow "if root is needed, we'll ask you!"
-	exit 0
-	break
+	e_arrow "if sudo is needed, we'll ask you!"
+	e_arrow "I let you continue, but don't make any mistake !"
 fi
 
 launchMainMenu() {
