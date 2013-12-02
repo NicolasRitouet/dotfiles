@@ -5,6 +5,7 @@
 	cp = cherry-pick
 	hist = log --oneline --graph --decorate --all
 	yesterday = log --since '1 day ago' --oneline --author nico2706@gmail.com
+	ac = !git add -A && git commit -m
 [user]
         name = NicolasRitouet
-        email = nico2706@gmail.com
+        email = nicolas@ritouet.com
