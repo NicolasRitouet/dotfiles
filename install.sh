@@ -228,7 +228,7 @@ installJava() {
 	sudo apt-get -y install oracle-java7-installer
 	sudo echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment;
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle/
-	echo -e "JAVA_HOME=/usr/lib/jvm/java-7-oracle/" >> ~/.bashpath
+	echo -e "\nJAVA_HOME=/usr/lib/jvm/java-7-oracle/" >> ~/.bashpath
 	# Set the path in a bash.path file ?
 	java -version > /dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
