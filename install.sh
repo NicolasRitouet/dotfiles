@@ -170,8 +170,8 @@ installNodeJsYeoman() {
 	
 	e_arrow "Installing NodeJs"
 	# Install nodeJS
-	export PATH=$HOME/local/bin:$PATH
-#	echo '\n\nexport PATH=$HOME/local/bin:$PATH' >> ~/.bashpath
+	export PATH=~/local/bin:$PATH
+	echo '\n\nexport PATH=~/local/bin:$PATH' >> ~/.bashpath
 	mkdir ~/local
 	mkdir ~/node-latest-install
 	cd ~/node-latest-install
@@ -187,6 +187,9 @@ installNodeJsYeoman() {
 	# Install NPM
 	e_arrow "Installing NPM"
 	curl https://npmjs.org/install.sh | sh
+	npm config set prefix $HOME/.node_modules
+	cho '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bashpath
+	
 	# Install yeoman
 	e_arrow "Installing Yeoman"
 	npm install -g yo
