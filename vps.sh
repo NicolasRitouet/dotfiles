@@ -29,15 +29,6 @@ function start {
     apt-get upgrade -y
   fi
 
-  # Ask If Logging Should Be Simplified
-  echo -n "Simplify logging configuration? (Y/n): "
-  read -e OPTION_LOGGING
-  # Check User Input
-  if [ "$OPTION_LOGGING" != "n" ]; then
-          # Execute Function
-          configure_logging
-  fi
-
   # Ask If Time Zone Should Be Set
   echo -n "Do you wish to set the timezone? (Y/n): "
   read -e OPTION_TZ
