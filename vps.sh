@@ -152,14 +152,14 @@ function install_dotfiles {
 
 function install_extras {
   e_arrow "Installing extras"
-  sudo apt-get -q -y update
+  apt-get -q -y update
   # Loop Through Package List
   while read package; do
           # Install Currently Selected Package
           installPackage $package
   done < extra
   # Clean Cached Packages
-  sudo apt-get clean
+  apt-get clean
 }
 
 function install_mongodb {
@@ -167,6 +167,10 @@ function install_mongodb {
   echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list
   apt-get -y update
   apt-get -y install mongodb-10gen
+  e_arrow "Allowing only localhost"
+  echo '\nbind_ip = 127.0.0.1' >> /etc/mongodb.conf
+  
+  
 }
 
 install_nodejs() {
@@ -205,7 +209,7 @@ function installPackage {
       e_success "Package $1 already installed!"
     else
       e_arrow "Installing package $1"
-      sudo apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
+      apt-get install --force-yes --yes $1 > /dev/null 2>&1 ;
       if [ $? -gt 0 ]        # What did last command return ?
       then
         e_error "Install of $1" "FAIL"
