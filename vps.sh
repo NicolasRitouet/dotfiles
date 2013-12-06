@@ -201,6 +201,7 @@ install_nodejs() {
   echo '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bashpath
        
 }
+
 # Install package, check if successfull and display fail or success
 function installPackage {
   while [ ${#} -gt 0 ]; do
@@ -238,4 +239,4 @@ function copyDotfile {
         fi
 }
 
-start()
+start
