@@ -5,6 +5,10 @@ Run this:
 
     wget -O install.tar.gz http://github.com/NicolasRitouet/dotfiles/tarball/master --no-check-certificate; tar zxvf install.tar.gz; cd *dotfiles*; ./install.sh
 
+or this for a VPS bootstrap:
+
+    wget -O install.tar.gz http://github.com/NicolasRitouet/dotfiles/tarball/master --no-check-certificate; tar zxvf install.tar.gz; cd *dotfiles*; ./vps.sh
+
 ## Session Duration Setup (for aliases)
 Run this:
 
