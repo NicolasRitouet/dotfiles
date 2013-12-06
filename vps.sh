@@ -119,14 +119,24 @@ function configure_timezone {
 
 # Add User Account
 function add_user {
-        echo \>\> Configuring: User Account
+        e_arrow "Configuring: User Account"
         # Take User Input
-        echo -n "Please enter a user name: "
+        ask "Please enter a user name: "
         read -e USERNAME
         # Add User Based On Input
         useradd -m -s /bin/bash $USERNAME
         # Set Password For Newly Added User
         passwd $USERNAME
+        echo $USERNAME ' ALL=(ALL:ALL) ALL' >> /etc/sudoers
+        cp .bashrc /home/$USERNAME/.bashrc
+        cp .zork.theme.bash /home/$USERNAME/.zork.theme.bash
+        cp .bash_profile /home/$USERNAME/.bash_profile
+        cp .inputrc /home/$USERNAME/.inputrc
+        cp .bashpath /home/$USERNAME/.bashpath
+        cp .bash_aliases /home/$USERNAME/.bash_aliases
+        cp .vimrc /home/$USERNAME/.vimrc
+        cp .bash_aliases /home/$USERNAME/.bash_aliases
+        cp .gitconfig /home/$USERNAME/.gitconfig
 }
 
 # Disable Root SSH Login
