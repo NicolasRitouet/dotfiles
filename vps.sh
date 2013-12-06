@@ -18,8 +18,6 @@ e_header "Bootstrap your VPS\n"
 
 function start {
 
-  apt-get update
-  apt-get upgrade -y
 
   # Ask If Update & upgrade
   echo -n "Do you wish to update and upgrade? (Y/n): "
