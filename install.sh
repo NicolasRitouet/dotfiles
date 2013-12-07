@@ -23,7 +23,7 @@ if [ "$(whoami)" == "root" ]; then
 fi
 
 launchMainMenu() {
-	PS3="Is this a [s]erver or a [d]eveloper workstation ?"
+	PS3="Is this a [s]erver, a [d]eveloper workstation or a [v]ps ?"
 	otpions=("Developer Box", "Server Box")
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
@@ -35,6 +35,10 @@ launchMainMenu() {
 				e_arrow "Server"
 				menuServer
 				;;
+			v) # vps
+				e_arrow "VPS bootstrap"
+				menuVps
+				;;
 			*)
 				echo invalid option
 				;;
@@ -45,8 +49,8 @@ launchMainMenu() {
 # sub-menu for a dev workstation
 menuDev() {
 	PS3="Developer Box: please enter your choice:"
-	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .zork.theme.bash, etc...)" #1
-		"Clone dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .zork.theme.bash, etc...)" #2
+	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .bash_prompt, etc...)" #1
+		"Clone dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .bash_prompt, etc...)" #2
 		"@(sudo) Install utilities (git-core, vim, mtr, bwm-ng, curl, htop, unrar, unzip, zip, tmux)" #3
 		"Install NodeJS and NPM (without sudo) and yeoman" #4
 		"@(sudo) Install Java 7" #5
@@ -57,11 +61,11 @@ menuDev() {
 	    case "$REPLY" in
 	        1) # Copy dotfiles
 				copyDotfile .bashrc
-				copyDotfile .zork.theme.bash
+				copyDotfile .bash_prompt
 				copyDotfile .bash_profile
-				copyDotfile .inputrc
-				copyDotfile .bashpath
+				copyDotfile .bash_path
 				copyDotfile .bash_aliases
+				copyDotfile .inputrc
 				copyDotfile .vimrc
 				copyDotfile .tmux.conf
 				copyDotfile .gitconfig
@@ -110,18 +114,18 @@ menuServer() {
 			updateAndUpgrade
 	            ;;
 	        2) # Create a user
-	            configure_user
+	            add_user
 	            ;;
 	       3) # Disable root
-	            configure_sshroot
+	            disable_sshroot
 	            ;;
 	        4) # Copy dotfiles
 			copyDotfile .bashrc
-			copyDotfile .zork.theme.bash
+			copyDotfile .bash_prompt
 			copyDotfile .bash_profile
-			copyDotfile .bashpath
-			copyDotfile .inputrc
+			copyDotfile .bash_path
 			copyDotfile .bash_aliases
+			copyDotfile .inputrc
 			copyDotfile .vimrc
 			copyDotfile .tmux.conf
 			copyDotfile .gitconfig
@@ -140,9 +144,47 @@ menuServer() {
 	done
 }
 
+function menuVps {
+
+e_header "Bootstrap your VPS\n"
+  # Ask If Update & upgrade
+  echo -n "Do you wish to update and upgrade? (Y/n): "
+  read -e OPTION_UPDATE
+  # Check User Input
+  if [ "$OPTION_UPDATE" != "n" ]; then
+    # Execute Function
+    apt-get update
+    apt-get upgrade -y
+  fi
+    
+  # Ask If Root SSH Should Be Disabled
+  echo -n "Do you wish to create a user and disable root SSH logins? (Y/n): "
+  read -e OPTION_SSHROOT
+  # Check User Input
+  if [ "$OPTION_SSHROOT" != "n" ]; then
+    # Create a new user
+    add_user
+    # Disable root with SSH
+    disable_sshroot
+    # Change SSH port
+    change_ssh_port
+  fi
+
+  # Ask If Utilities should be installed
+  echo -n "Do you wish to install Extras (dotfiles, git, curl, htop, vim)? (Y/n): "
+  read -e OPTION_EXTRAS
+  # Check User Input
+  if [ "$OPTION_EXTRAS" != "n" ]; then
+    # Execute Function
+    install_dotfiles_vps
+    installUtilities
+  fi
+
+}
+
 
 # clone the repository and symlink the dotfiles in $HOME
-cloneDotfiles() {
+function cloneDotfiles {
 	if git --version &> /dev/null ; then
 		e_success "GIT already installed"
 	else
@@ -153,11 +195,11 @@ cloneDotfiles() {
 	# add symlink for every dotfile
 
 	symlinkDotfile .bashrc
-	symlinkDotfile .zork.theme.bash
+	symlinkDotfile .bash_prompt
 	symlinkDotfile .bash_profile
-	symlinkDotfile .inputrc
-	symlinkDotfile .bashpath
+	symlinkDotfile .bash_path
 	symlinkDotfile .bash_aliases
+	symlinkDotfile .inputrc
 	symlinkDotfile .vimrc
 	symlinkDotfile .tmux.conf
 	symlinkDotfile .gitconfig
@@ -171,7 +213,7 @@ installNodeJsYeoman() {
 	e_arrow "Installing NodeJs"
 	# Install nodeJS
 	export PATH=~/local/bin:$PATH
-	echo '\n\nexport PATH=~/local/bin:$PATH' >> ~/.bashpath
+	echo '\n\nexport PATH=~/local/bin:$PATH' >> ~/.bash_path
 	mkdir ~/local
 	mkdir ~/node-latest-install
 	cd ~/node-latest-install
@@ -188,7 +230,7 @@ installNodeJsYeoman() {
 	e_arrow "Installing NPM"
 	curl https://npmjs.org/install.sh | sh
 	npm config set prefix $HOME/.node_modules
-	cho '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bashpath
+	cho '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bash_path
 	
 	# Install yeoman
 	e_arrow "Installing Yeoman"
@@ -230,7 +272,7 @@ installJava() {
 	sudo apt-get -y install oracle-java7-installer
 	sudo echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment;
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle/
-	echo -e "\nJAVA_HOME=/usr/lib/jvm/java-7-oracle/" >> ~/.bashpath
+	echo -e "\nJAVA_HOME=/usr/lib/jvm/java-7-oracle/" >> ~/.bash_path
 	# Set the path in a bash.path file ?
 	java -version > /dev/null
 	if [ $? -gt 0 ]	# What did last command return ?
@@ -255,10 +297,10 @@ installMaven() {
 	export M2=$M2_HOME/bin
 	export PATH=$M2:$PATH
 
-	e_arrow "Install path in bashpath ..."
-	echo -e "M2_HOME=/usr/local/maven" >> ~/.bashpath
-	echo -e "M2=$M2_HOME/bin" >> ~/.bashpath
-	echo -e "PATH=$M2:$PATH" >> ~/.bashpath
+	e_arrow "Install path in bash_path ..."
+	echo -e "M2_HOME=/usr/local/maven" >> ~/.bash_path
+	echo -e "M2=$M2_HOME/bin" >> ~/.bash_path
+	echo -e "PATH=$M2:$PATH" >> ~/.bash_path
 }
 
 installPlay() {
@@ -284,8 +326,8 @@ updateAndUpgrade() {
 
 
 # Add User Account
-configure_user() {
-	e_arrow "Configuring: User Account"
+function add_user {
+	e_arrow "Add: User Account"
 	# Take User Input
 	ask "Please enter a user name: "
 	read -e USERNAME
@@ -294,11 +336,17 @@ configure_user() {
 	# Set Password For Newly Added User
 	passwd $USERNAME
 	echo $USERNAME ' ALL=(ALL:ALL) ALL' >> /etc/sudoers
+	# Copy dotfiles to the new user and chown them
+	for dotfile in .bashrc .bash_prompt .bash_profile .bash_path .bash_aliases .inputrc .vimrc .gitconfig
+	do
+		cp $dotfile /home/$USERNAME/$dotfile
+		chown $USERNAME:$USERNAME /home/$USERNAME/$dotfile
+	done
 }
 
 # Disable Root SSH Login
-configure_sshroot() {
-	e_arrow "Configuring: Disabling Root SSH Login"
+function disable_sshroot {
+	e_arrow "Disabling Root SSH Login"
 	e_arrow "BE SURE TO CREATE A NEW USER BEFORE"
 	# Disable Root SSH Login For OpenSSH
 	sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
@@ -309,6 +357,14 @@ configure_sshroot() {
 		e_success "Disable SSH Root login" "Success"
 		e_arrow "You need to restart sshd or reboot to take the changes"
 	fi
+	# Disable Root SSH Login For Dropbear
+    # sed -i 's/DROPBEAR_EXTRA_ARGS="/DROPBEAR_EXTRA_ARGS="-w/g' /etc/default/dropbear
+}
+
+function change_ssh_port {
+	e_arrow "Change SSH port"
+	sed -i "s/Port 22/Port 2706/g" /etc/ssh/sshd_config
+
 }
 
 # Copy a dotfile to the home directory of the current user

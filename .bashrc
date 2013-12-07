@@ -34,8 +34,8 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 ## Beautiful Zork bash theme 
-if [ -f ~/.zork.theme.bash ]; then
-    . ~/.zork.theme.bash
+if [ -f ~/.bash_prompt ]; then
+    . ~/.bash_prompt
 fi
 
 # Alias definitions.
@@ -49,8 +49,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # Path management.
-if [ -f ~/.bashpath ]; then
-    . ~/.bashpath
+if [ -f ~/.bash_path ]; then
+    . ~/.bash_path
 fi
 
 # Not needed yet, maybe later:
