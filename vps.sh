@@ -135,6 +135,7 @@ function configure_sshroot {
   sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
   # Disable Root SSH Login For Dropbear
   # sed -i 's/DROPBEAR_EXTRA_ARGS="/DROPBEAR_EXTRA_ARGS="-w/g' /etc/default/dropbear
+  e_arrow "Now, you should stop and restart with the new user"
 }
 
 function install_dotfiles {
@@ -167,7 +168,8 @@ function install_mongodb {
   apt-get -y update
   apt-get -y install mongodb-10gen
   e_arrow "Allowing only localhost"
-  echo '\nbind_ip = 127.0.0.1' >> /etc/mongodb.conf
+  echo 'bind_ip = 127.0.0.1' >> /etc/mongodb.conf
+  echo "smallfiles = true" >> /etc/mongodb.conf
   
   
 }
@@ -179,7 +181,7 @@ install_nodejs() {
   e_arrow "Installing NodeJs"
   # Install nodeJS
   export PATH=~/local/bin:$PATH
-  echo '\n\nexport PATH=~/local/bin:$PATH' >> ~/.bashpath
+  echo 'export PATH=~/local/bin:$PATH' >> ~/.bashpath
   mkdir ~/local
   mkdir ~/node-latest-install
   cd ~/node-latest-install
@@ -197,7 +199,7 @@ install_nodejs() {
   curl https://npmjs.org/install.sh | sh
   # Change the globaly node_modules folder
   npm config set prefix $HOME/.node_modules
-  echo '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bashpath
+  echo 'export PATH=~/.node_modules/bin:$PATH' >> ~/.bashpath
        
 }
 
