@@ -24,7 +24,7 @@ fi
 
 launchMainMenu() {
 	PS3="Is this a [s]erver, a [d]eveloper workstation or a [v]ps ?"
-	otpions=("Developer Box", "Server Box")
+	otpions=("Developer Box", "Server Box", "vps")
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
 	        d) # Developer Box
@@ -178,6 +178,15 @@ e_header "Bootstrap your VPS\n"
     # Execute Function
     install_dotfiles_vps
     installUtilities
+  fi
+
+  # Ask If reboot
+  echo -n "Do you wish to reboot? (Y/n): "
+  read -e OPTION_REBOOT
+  # Check User Input
+  if [ "$OPTION_REBOOT" != "n" ]; then
+    # Execute Function
+    reboot
   fi
 
 }
