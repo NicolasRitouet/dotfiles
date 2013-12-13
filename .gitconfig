@@ -1,11 +1,12 @@
 [color]
 	ui = auto
 [alias]
-	last = log --oneline -n 1
 	cp = cherry-pick
 	hist = log --oneline --graph --decorate --all
-	yesterday = log --since '1 day ago' --oneline --author nico2706@gmail.com
+	yesterday = log --since '1 day ago' --oneline --author nicolas.ritouet@zanox.com
 	ac = !git add -A && git commit -m
+	co = checkout
+	last = log --name-status HEAD^..HEAD
 [user]
         name = NicolasRitouet
         email = nicolas@ritouet.com
