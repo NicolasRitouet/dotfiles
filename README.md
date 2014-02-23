@@ -3,7 +3,7 @@
 ## Install on Linux
 Run this:
 
-    wget -O install.tar.gz http://github.com/NicolasRitouet/dotfiles/tarball/master --no-check-certificate; tar zxvf install.tar.gz; cd *dotfiles*; ./install.sh
+    wget -O install.tar.gz http://github.com/NicolasRitouet/dotfiles/tarball/master --no-check-certificate && tar zxvf install.tar.gz && cd *dotfiles* && ./install.sh
 
 
 ## What does it do?
