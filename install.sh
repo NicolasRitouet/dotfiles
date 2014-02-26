@@ -23,8 +23,8 @@ if [ "$(whoami)" == "root" ]; then
 fi
 
 launchMainMenu() {
-	PS3="Is this a [s]erver, a [d]eveloper workstation or a [v]ps ?"
-	otpions=("Developer Box", "Server Box", "vps")
+	PS3="Is this a [s]erver, a [d]eveloper workstation,  a [v]ps or a [m]ac OS x ?"
+	otpions=("Developer Box", "Server Box", "vps", "MacOS X")
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
 	        d) # Developer Box
@@ -38,6 +38,10 @@ launchMainMenu() {
 			v) # vps
 				e_arrow "VPS bootstrap"
 				menuVps
+				;;
+			m) # macosx
+				e_arrow "Mac OS x"
+				menuMacosx
 				;;
 			*)
 				echo invalid option
@@ -189,6 +193,10 @@ e_header "Bootstrap your VPS\n"
     reboot
   fi
 
+}
+
+function menuMacosx {
+	
 }
 
 
