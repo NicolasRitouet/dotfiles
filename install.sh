@@ -24,7 +24,7 @@ fi
 
 launchMainMenu() {
 	PS3="Is this a [s]erver, a [d]eveloper workstation,  a [v]ps or a [m]ac OS x ?"
-	otpions=("Developer Box", "Server Box", "vps", "MacOS X")
+	options=("Developer Box", "Server Box", "vps", "MacOS X")
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
 	        d) # Developer Box
@@ -196,7 +196,7 @@ e_header "Bootstrap your VPS\n"
 }
 
 function menuMacosx {
-	
+	echo -n "Coming soon ..."
 }
 
 
