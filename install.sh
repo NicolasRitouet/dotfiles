@@ -283,7 +283,7 @@ installJava() {
 	# if add-apt-repository > ??, then, add argument -y
 	sudo add-apt-repository ppa:webupd8team/java
 	# At work, port 11371 is blocked, we have to manually add the key using the port 80
-	sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 EEA14886
+	# sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 EEA14886
 	sudo apt-get -q -y update
 	sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 	sudo apt-get -y install oracle-java7-installer
