@@ -1,8 +1,6 @@
 python-software-properties
 software-properties-common
 git-core
-subversion
-mercurial
 vim
 mtr
 bwm-ng
