@@ -180,7 +180,7 @@ e_header "Bootstrap your VPS\n"
   # Check User Input
   if [ "$OPTION_EXTRAS" != "n" ]; then
     # Execute Function
-    install_dotfiles_vps
+    installDotfilesVps
     installUtilities
   fi
 
@@ -194,6 +194,20 @@ e_header "Bootstrap your VPS\n"
   fi
 
 }
+
+function installDotfilesVps {
+	copyDotfile .bashrc
+	copyDotfile .bash_prompt
+	copyDotfile .bash_profile
+	copyDotfile .bash_path
+	copyDotfile .bash_aliases
+	copyDotfile .inputrc
+	copyDotfile .vimrc
+	copyDotfile .tmux.conf
+	copyDotfile .gitconfig
+		
+}
+
 
 function menuMacosx {
 	echo -n "Coming soon ..."
