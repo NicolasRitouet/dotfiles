@@ -3,10 +3,12 @@
 [alias]
 	cp = cherry-pick
 	hist = log --oneline --graph --decorate --all
-	yesterday = log --since '1 day ago' --oneline --author nicolas.ritouet@zanox.com
+	yesterday = log --since '1 day ago' --oneline --author nicolas@ritouet.com
 	ac = !git add -A && git commit -m
 	co = checkout
 	last = log --name-status HEAD^..HEAD
+	ps = push origin master
+	pl = pull origin master
 [user]
         name = NicolasRitouet
         email = nicolas@ritouet.com
