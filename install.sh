@@ -261,13 +261,13 @@ installNodeJsYeoman() {
 	e_arrow "Installing NPM"
 	curl https://npmjs.org/install.sh | sh
 	npm config set prefix $HOME/.node_modules
-	cho '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bash_path
+	echo '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bash_path
 	
 	# Install yeoman
-	e_arrow "Installing Yeoman"
-	npm install -g yo
+	# e_arrow "Installing Yeoman"
+	# npm install -g yo
 	# and the angular generator
-	npm install -g generator-angular
+	# npm install -g generator-angular
 
 	# Install Ruby
 	#e_arrow "Install Ruby..."
