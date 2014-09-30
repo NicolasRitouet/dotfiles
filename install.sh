@@ -261,7 +261,7 @@ installNodeJsYeoman() {
 	e_arrow "Installing NPM"
 	curl https://npmjs.org/install.sh | sh
 	npm config set prefix $HOME/.node_modules
-	echo '\n\nexport PATH=~/.node_modules/bin:$PATH' >> ~/.bash_path
+	echo 'export PATH=~/.node_modules/bin:$PATH' >> ~/.bash_path
 	
 	# Install yeoman
 	# e_arrow "Installing Yeoman"
