@@ -13,7 +13,7 @@ e_success()  { echo -e " \033[1;32m✔\033[0m  $@"; }
 e_error()    { echo -e " \033[1;31m✖\033[0m  $@"; }
 e_arrow()    { echo -e " \033[1;33m➜\033[0m  $@"; }
 
-e_header "Setup your Fresh Linux Box\n"
+e_header "Bootstrap your machine (Linux server, linux desktop or mac\n"
 
 # Check if root privileges
 if [ "$(whoami)" == "root" ]; then
@@ -24,10 +24,10 @@ fi
 
 launchMainMenu() {
 	PS3="Is this a [s]erver, a [d]eveloper workstation,  a [v]ps or a [m]ac OS x ?"
-	options=("Developer Box", "Server Box", "vps", "MacOS X")
+	options=("Developer Box" "Server Box" "vps" "MacOS X")
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
-	        d) # Developer Box
+	    d) # Developer Box
 				e_arrow "Developer Workstation"
 				menuDev
 				;;
@@ -59,7 +59,6 @@ menuDev() {
 		"Install NodeJS and NPM (without sudo) and yeoman" #4
 		"@(sudo) Install Java 7" #5
 		"@(sudo) Install Maven (not sure if this works everywhere)" #6
-		"@(sudo) Install Play 2.2.0" #6
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
@@ -89,10 +88,7 @@ menuDev() {
 			6) # Install Maven
 				installMaven
 				;;
-			7) # Install Play! Framework
-				installPlay
-				;;
-	        $(( ${#options[@]}+1 )) )
+	     $(( ${#options[@]}+1 )) )
 				echo "If you made some bash changes, don't forget to reload after leaving:"
 				echo ". ~/.bashrc";
 				exit 0
@@ -195,6 +191,106 @@ e_header "Bootstrap your VPS\n"
 
 }
 
+
+
+function menuMacosx {
+
+	# copy dotfiles
+  echo -n "Copy dotfiles? (Y/n): "
+  read -e COPY_DOTFILES
+  # Check User Input
+  if [ "$COPY_DOTFILES" != "n" ]; then
+    # Execute Function
+			copyDotfile .bashrc
+			copyDotfile .bash_prompt
+			copyDotfile .bash_profile
+			copyDotfile .bash_path
+			copyDotfile .bash_aliases
+			copyDotfile .inputrc
+			copyDotfile .vimrc
+			copyDotfile .tmux.conf
+			copyDotfile .gitconfig
+  fi
+
+	# Install homebrew if it isn't installed already
+	# Check for Homebrew,
+	# Install if we don't have it
+	if test ! $(which brew); then
+	  echo "Installing homebrew..."
+	  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	fi
+
+	# Update homebrew recipes
+	brew update
+
+	# Install GNU core utilities (those that come with OS X are outdated)
+	brew install coreutils
+
+	# Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
+	brew install findutils
+
+	# Install Bash 4
+	brew install bash
+
+	# Install more recent versions of some OS X tools
+	brew tap homebrew/dupes
+	brew install homebrew/dupes/grep
+
+	# add path of coreutils in $PATH
+	echo "export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH" >> ~/.bash_path
+	binaries=(
+	  graphicsmagick
+	  webkit2png
+	  rename
+	  zopfli
+	  ffmpeg
+	  python
+	  sshfs
+	  trash
+	  node
+	  tree
+	  ack
+	  git
+	  p7zip
+	)
+
+	echo "installing binaries..."
+	brew install ${binaries[@]}
+	brew cleanup
+
+	brew tap caskroom/versions
+
+
+	# Apps
+	apps=(
+	  alfred
+	  dropbox
+	  google-chrome
+	  firefox
+	  qlcolorcode
+	  qlmarkdown
+	  quicklook-json
+	  qlstephen
+	  transmit
+	  appcleaner
+	  spotify
+	  virtualbox
+	  vagrant
+	  iterm2
+	  sublime-text3
+	  flux
+	  vlc
+	  skype
+	)
+
+	# Install apps to /Applications
+	# Default is: /Users/$user/Applications
+	echo "installing apps..."
+	brew cask install --appdir="/Applications" ${apps[@]}
+
+	
+}
+
 function installDotfilesVps {
 	copyDotfile .bashrc
 	copyDotfile .bash_prompt
@@ -206,11 +302,6 @@ function installDotfilesVps {
 	copyDotfile .tmux.conf
 	copyDotfile .gitconfig
 		
-}
-
-
-function menuMacosx {
-	echo -n "Coming soon ..."
 }
 
 
@@ -244,7 +335,7 @@ installNodeJsYeoman() {
 	e_arrow "Installing NodeJs"
 	# Install nodeJS
 	export PATH=~/local/bin:$PATH
-	echo '\n\nexport PATH=~/local/bin:$PATH' >> ~/.bash_path
+	echo "\n\nexport PATH=~/local/bin:$PATH" >> ~/.bash_path
 	mkdir ~/local
 	mkdir ~/node-latest-install
 	cd ~/node-latest-install
@@ -261,7 +352,7 @@ installNodeJsYeoman() {
 	e_arrow "Installing NPM"
 	curl https://npmjs.org/install.sh | sh
 	npm config set prefix $HOME/.node_modules
-	echo 'export PATH=~/.node_modules/bin:$PATH' >> ~/.bash_path
+	echo "\n\nexport PATH=~/.node_modules/bin:$PATH" >> ~/.bash_path
 	
 	# Install yeoman
 	# e_arrow "Installing Yeoman"
@@ -282,7 +373,7 @@ installUtilities() {
 	# Loop Through Package List
 	while read package; do
 		# Install Currently Selected Package
-		installPackage $package
+		installPackage "$package"
 	done < devTools
 	# Clean Cached Packages
 	sudo apt-get clean
@@ -301,7 +392,7 @@ installJava() {
 	sudo apt-get -q -y update
 	sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 	sudo apt-get -y install oracle-java7-installer
-	sudo echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment;
+	echo -e "\n\nJAVA_HOME=/usr/lib/jvm/java-7-oracle" | sudo tee -a /etc/environment > /dev/null
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle/
 	echo -e "\nJAVA_HOME=/usr/lib/jvm/java-7-oracle/" >> ~/.bash_path
 	# Set the path in a bash.path file ?
