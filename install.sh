@@ -251,6 +251,7 @@ function menuMacosx {
 	  tree
 	  ack
 	  git
+	  htop
 	  p7zip
 	)
 
