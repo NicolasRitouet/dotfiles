@@ -1,4 +1,8 @@
-# Setup a fresh Linux box
+# Bootstrap me!
+
+This repo contains my precious dotfiles and a bash script to bootstrap a debian-based Developer box, a Debian-based server and a MacOSX box.
+
+![Prompt](https://raw.githubusercontent.com/NicolasRitouet/nicolasritouet.github.io/master/images/Screenshot-zork-prompt.png)
 
 ## Install on Linux
 
@@ -6,7 +10,7 @@
 
 ## Install on MacOSX
 
-````curl http://github.com/NicolasRitouet/dotfiles/tarball/master && tar zxvf install.tar.gz && cd *dotfiles* && ./install.sh````
+````curl -o install.tar.gz http://github.com/NicolasRitouet/dotfiles/tarball/master && tar zxvf install.tar.gz && cd *dotfiles* && ./install.sh````
 
 
 ## What does it do?
@@ -24,7 +28,8 @@
 - Install homebrew if doesn't exist
 - Install those binaries: 
 - Install those apps:
-- 
+
+
 
 
 ## Todo
