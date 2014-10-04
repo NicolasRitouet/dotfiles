@@ -325,7 +325,7 @@ installNodeJsYeoman() {
 # Install Utilities Defined In File "extra"
 installUtilities() {
 	e_arrow "Installing utilities"
-	sudo apt-get -q -y update
+	sudo apt-get -q -y update || true
 	# Loop Through Package List
 	while read package; do
 		# Install Currently Selected Package
@@ -422,7 +422,7 @@ copyDotfile() {
 # Install package, check if successfull and display fail or success
 installPackage() {
 	while [ ${#} -gt 0 ]; do
-		INSTALLED=$(dpkg -l | grep " $1 ")
+		INSTALLED=$(dpkg -l | grep " $1 ") || true
 		if [ "$INSTALLED" != "" ]; then
 			e_success "Package $1 already installed!"
 		else
