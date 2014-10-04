@@ -1,19 +1,96 @@
-#!/bin/bash
+#!/usr/bin/env bash
+###########################################################################
 #
-# Utility script to setup a fresh Linux box
+# "Bootstrap me!"
+# Fast and Easy OS bootstrap script
+# This script help you to install and configure a Debian-based or MacOSX box with:
+#	- My own dotfiles (alias, prompt, path, etc...)
+#	- Useful binaries
+# - Useful apps
+# - 
+#	- Secure server
+# Author: Nicolas Ritouet <nicolas@ritouet.com>
+# URL: https://github.com/NicolasRitouet/dotfiles
+# Created: Dec 24, 2012
+# Version: 0.2.0
 #
-# @author Nicolas Ritouet <nicolas@ritouet.com>
+###########################################################################
+
+# Import some utility functions
+source ./utility.sh
 
 
-# Extra logs methods
-ask() { echo -e -n " [1;32m☆ $1 [0m\n"; }
+# Get a random number to display randomly the headers
+randomNumber=$((((RANDOM + RANDOM) % 6) + 1))
+echo "";
+case $randomNumber in
+	1)
+		cecho "▄▄▄▄·             ▄▄▄▄▄.▄▄ · ▄▄▄▄▄▄▄▄   ▄▄▄·  ▄▄▄·    • ▌ ▄ ·. ▄▄▄ .▄▄ " $blue
+		cecho "▐█ ▀█▪▪     ▪     •██  ▐█ ▀. •██  ▀▄ █·▐█ ▀█ ▐█ ▄█    ·██ ▐███▪▀▄.▀·██▌" $blue
+		cecho "▐█▀▀█▄ ▄█▀▄  ▄█▀▄  ▐█.▪▄▀▀▀█▄ ▐█.▪▐▀▀▄ ▄█▀▀█  ██▀·    ▐█ ▌▐▌▐█·▐▀▀▪▄▐█·" $blue
+		cecho "██▄▪▐█▐█▌.▐▌▐█▌.▐▌ ▐█▌·▐█▄▪▐█ ▐█▌·▐█•█▌▐█ ▪▐▌▐█▪·•    ██ ██▌▐█▌▐█▄▄▌.▀ " $blue
+		cecho "·▀▀▀▀  ▀█▄▀▪ ▀█▄▀▪ ▀▀▀  ▀▀▀▀  ▀▀▀ .▀  ▀ ▀  ▀ .▀       ▀▀  █▪▀▀▀ ▀▀▀  ▀ " $blue
+	;;
+	2)
+		cecho "╔╗ ╔═╗╔═╗╔╦╗╔═╗╔╦╗╦═╗╔═╗╔═╗  ╔╦╗╔═╗┬" $yellow
+		cecho "╠╩╗║ ║║ ║ ║ ╚═╗ ║ ╠╦╝╠═╣╠═╝  ║║║║╣ │" $yellow
+		cecho "╚═╝╚═╝╚═╝ ╩ ╚═╝ ╩ ╩╚═╩ ╩╩    ╩ ╩╚═╝o" $yellow
+		;;
+	3)
+		cecho "██████╗  ██████╗  ██████╗ ████████╗███████╗████████╗██████╗  █████╗ ██████╗     ███╗   ███╗███████╗██╗" $magenta
+		cecho "██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗    ████╗ ████║██╔════╝██║" $magenta
+		cecho "██████╔╝██║   ██║██║   ██║   ██║   ███████╗   ██║   ██████╔╝███████║██████╔╝    ██╔████╔██║█████╗  ██║" $magenta
+		cecho "██╔══██╗██║   ██║██║   ██║   ██║   ╚════██║   ██║   ██╔══██╗██╔══██║██╔═══╝     ██║╚██╔╝██║██╔══╝  ╚═╝" $magenta
+		cecho "██████╔╝╚██████╔╝╚██████╔╝   ██║   ███████║   ██║   ██║  ██║██║  ██║██║         ██║ ╚═╝ ██║███████╗██╗" $magenta
+		cecho "╚═════╝  ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝         ╚═╝     ╚═╝╚══════╝╚═╝" $magenta
+		cecho "                                                                                                      " $magenta
+		;;
+	4)
+		cecho " ____    ___    ___   ______  _____ ______  ____    ____  ____       ___ ___    ___  __ " $yellow
+		cecho "|    \  /   \  /   \ |      |/ ___/|      ||    \  /    ||    \     |   |   |  /  _]|  |" $yellow
+		cecho "|  o  )|     ||     ||      (   \_ |      ||  D  )|  o  ||  o  )    | _   _ | /  [_ |  |" $yellow
+		cecho "|     ||  O  ||  O  ||_|  |_|\__  ||_|  |_||    / |     ||   _/     |  \_/  ||    _]|__|" $yellow
+		cecho "|  O  ||     ||     |  |  |  /  \ |  |  |  |    \ |  _  ||  |       |   |   ||   [_  __ " $yellow
+		cecho "|     ||     ||     |  |  |  \    |  |  |  |  .  \|  |  ||  |       |   |   ||     ||  |" $yellow
+		cecho "|_____| \___/  \___/   |__|   \___|  |__|  |__|\_||__|__||__|       |___|___||_____||__|" $yellow
+		cecho "                                                                                        " $yellow
+		;;
+	5)
+		cecho "______  _____  _____ _____ _____ ___________  ___  ______  ___  ___ _____ _ " $magenta
+		cecho "| ___ \|  _  ||  _  |_   _/  ___|_   _| ___ \/ _ \ | ___ \ |  \/  ||  ___| |" $magenta
+		cecho "| |_/ /| | | || | | | | | \ \`--.  | | | |_/ / /_\ \| |_/ / | .  . || |__ | |" $magenta
+		cecho "| ___ \| | | || | | | | |  \`--. \ | | |    /|  _  ||  __/  | |\/| ||  __|| |" $magenta
+		cecho "| |_/ /\ \_/ /\ \_/ / | | /\__/ / | | | |\ \| | | || |     | |  | || |___|_|" $magenta
+		cecho "\____/  \___/  \___/  \_/ \____/  \_/ \_| \_\_| |_/\_|     \_|  |_/\____/(_)" $magenta
+		cecho "                                                                            " $magenta
+		cecho "                                                                            " $magenta
+		;;
+	6)
+		cecho "          )      )         (           (              (        *            ____ " $red
+		cecho "   (   ( /(   ( /(   *   ) )\ )  *   ) )\ )    (      )\ )   (  \`          |   / " $red
+		cecho " ( )\  )\())  )\())\` )  /((()/(\` )  /((()/(    )\    (()/(   )\))(   (     |  /  " $red
+		cecho " )((_)((_)\  ((_)\  ( )(_))/(_))( )(_))/(_))((((_)(   /(_)) ((_)()\  )\    | /   " $red
+		cecho "((_)_   ((_)   ((_)(_(_())(_)) (_(_())(_))   )\ _ )\ (_))   (_()((_)((_)   |/    " $red
+		cecho " | _ ) / _ \  / _ \|_   _|/ __||_   _|| _ \  (_)_\(_)| _ \  |  \/  || __| (      " $red
+		cecho " | _ \| (_) || (_) | | |  \__ \  | |  |   /   / _ \  |  _/  | |\/| || _|  )\     " $red
+		cecho " |___/ \___/  \___/  |_|  |___/  |_|  |_|_\  /_/ \_\ |_|    |_|  |_||___|((_)    " $red
+		cecho "                                                                                 " $red
+		;;
+esac
 
-e_header()   { echo -e "\n\033[1m$@\033[0m"; }
-e_success()  { echo -e " \033[1;32m✔\033[0m  $@"; }
-e_error()    { echo -e " \033[1;31m✖\033[0m  $@"; }
-e_arrow()    { echo -e " \033[1;33m➜\033[0m  $@"; }
-
-e_header "Bootstrap your machine (Linux server, linux desktop or mac\n"
+echo ""
+cecho "    ..........................................................       "
+cecho "    .            Dotfiles 0.2.0 (NicolasRitouet)             .       "
+cecho "    .       https://github.com/nicolasritouet/dotfiles       .       "
+cecho "    .                                                        .       "
+cecho "    .        Bootstrap your Debian-based or MacOSX box       .       "
+cecho "    .        Includes:                                       .       "
+cecho "    .          - Dotfiles (alias, prompt, path, etc...)      .       "
+cecho "    .          - Useful binaries                             .       "
+cecho "    .          - Useful apps                                 .       "
+cecho "    .          - Secure (!!) a server                        .       "
+cecho "    ..........................................................       "
+echo ""
 
 # Check if root privileges
 if [ "$(whoami)" == "root" ]; then
@@ -23,26 +100,38 @@ if [ "$(whoami)" == "root" ]; then
 fi
 
 launchMainMenu() {
-	PS3="Is this a [s]erver, a [d]eveloper workstation,  a [v]ps or a [m]ac OS x ?"
-	options=("Developer Box" "Server Box" "vps" "MacOS X")
+	if [[ $OSTYPE = darwin* ]]; then
+		e_arrow "It looks like you are running this script on a Mac OSX"
+		ask "Should I bootstrap this mac? (Y/n): " $yellow
+  	read -e BOOTSTRAP_MAC
+  	if [ "${BOOTSTRAP_MAC}" != "n" ]; then
+				menuMacosx
+  	fi
+  fi
+
+	ask "What do you want to bootstrap ? ($OSTYPE)"
+	PS3="Choose one option: "
+	options=("Debian-based Developer Box" "Debian-based Server (and VPS)" "MacOS X")
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
-	    d) # Developer Box
+	    [d1]) # Developer Box
 				e_arrow "Developer Workstation"
 				menuDev
 				;;
-			s) # Server box
-				e_arrow "Server"
+			[v2]) # vps
+				e_arrow "VPS bootstrap"
 				menuServer
 				;;
-			v) # vps
-				e_arrow "VPS bootstrap"
-				menuVps
-				;;
-			m) # macosx
+			[m3]) # macosx
 				e_arrow "Mac OS x"
 				menuMacosx
 				;;
+			$(( ${#options[@]}+1 )) )
+				echo "If you made some bash changes, don't forget to reload after leaving:"
+				echo ". ~/.bashrc";
+				exit 0
+        break
+        ;;
 			*)
 				echo invalid option
 				;;
@@ -52,105 +141,44 @@ launchMainMenu() {
 
 # sub-menu for a dev workstation
 menuDev() {
-	PS3="Developer Box: please enter your choice:"
+	ask "Developer Box: please enter your choice:"
 	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .bash_prompt, etc...)" #1
-		"Clone dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .bash_prompt, etc...)" #2
-		"@(sudo) Install utilities (git-core, vim, mtr, bwm-ng, curl, htop, unrar, unzip, zip, tmux)" #3
-		"Install NodeJS and NPM (without sudo) and yeoman" #4
-		"@(sudo) Install Java 7" #5
-		"@(sudo) Install Maven (not sure if this works everywhere)" #6
+		"@(sudo) Install utilities (git-core, vim, mtr, bwm-ng, curl, htop, unrar, unzip, zip, tmux)" #2
+		"Install NodeJS and NPM (without sudo) and yeoman" #3
+		"@(sudo) Install Java 7" #4
 	)
 	select opt in "${options[@]}"  "Quit"; do
 	    case "$REPLY" in
-	        1) # Copy dotfiles
-				copyDotfile .bashrc
-				copyDotfile .bash_prompt
-				copyDotfile .bash_profile
-				copyDotfile .bash_path
-				copyDotfile .bash_aliases
-				copyDotfile .inputrc
-				copyDotfile .vimrc
-				copyDotfile .tmux.conf
-				copyDotfile .gitconfig
-				;;
-	        2) # Clone dotfiles
-				cloneDotfiles
-				;;
-			3) # Install utilities
-				installUtilities
-				;;
-			4) # Install NodeJS
-				installNodeJsYeoman
-				;;
-			5) # Install Java
-				installJava
-				;;
-			6) # Install Maven
-				installMaven
-				;;
-	     $(( ${#options[@]}+1 )) )
-				echo "If you made some bash changes, don't forget to reload after leaving:"
-				echo ". ~/.bashrc";
-				exit 0
-	            break
-	            ;;
-	        *) echo invalid option;;
+	    	1) # Copy dotfiles
+					copyDotfiles
+					;;
+				2) # Install utilities
+					installUtilities
+					;;
+				3) # Install NodeJS
+					installNodeJsYeoman
+					;;
+				4) # Install Java
+					installJava7
+					;;
+		    $(( ${#options[@]}+1 )) )
+					echo "If you made some bash changes, don't forget to reload after leaving:"
+					echo ". ~/.bashrc";
+					exit 0
+	        break
+	        ;;
+	    	*) echo invalid option;;
 	    esac
 	done
 }
 
 
 menuServer() {
-	PS3="Server Box: please enter your choice:"
-	options=("@(sudo) Update && upgrade your debian" #1
-		"@(sudo) Create a new user" #2
-		"Disable root login from SSH" #3
-		"Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf)" #4
-		"Install extras" #5
-	)
-	select opt in "${options[@]}"  "Quit"; do
-	    case "$REPLY" in
-	        1) # Update && upgrade debian
-			updateAndUpgrade
-	            ;;
-	        2) # Create a user
-	            add_user
-	            ;;
-	       3) # Disable root
-	            disable_sshroot
-	            ;;
-	        4) # Copy dotfiles
-			copyDotfile .bashrc
-			copyDotfile .bash_prompt
-			copyDotfile .bash_profile
-			copyDotfile .bash_path
-			copyDotfile .bash_aliases
-			copyDotfile .inputrc
-			copyDotfile .vimrc
-			copyDotfile .tmux.conf
-			copyDotfile .gitconfig
-			;;
-		5) # Install extras
-			install_extra
-			;;
-	        $(( ${#options[@]}+1 )) )
-				echo "If you made some bash changes, don't forget to reload after leaving:"
-				echo ". ~/.bashrc";
-				exit 0
-	            break
-	            ;;
-	        *) echo invalid option;;
-	    esac
-	done
-}
 
-function menuVps {
-
-e_header "Bootstrap your VPS\n"
+	e_arrow "Bootstrap your VPS\n"
   # Ask If Update & upgrade
-  echo -n "Do you wish to update and upgrade? (Y/n): "
+  ask "Do you wish to update and upgrade? (Y/n): "
   read -e OPTION_UPDATE
-  # Check User Input
   if [ "$OPTION_UPDATE" != "n" ]; then
     # Execute Function
     apt-get update
@@ -158,9 +186,8 @@ e_header "Bootstrap your VPS\n"
   fi
     
   # Ask If Root SSH Should Be Disabled
-  echo -n "Do you wish to create a user and disable root SSH logins? (Y/n): "
+  ask "Do you wish to create a user and disable root SSH logins? (Y/n): "
   read -e OPTION_SSHROOT
-  # Check User Input
   if [ "$OPTION_SSHROOT" != "n" ]; then
     # Create a new user
     add_user
@@ -171,19 +198,17 @@ e_header "Bootstrap your VPS\n"
   fi
 
   # Ask If Utilities should be installed
-  echo -n "Do you wish to install Extras (dotfiles, git, curl, htop, vim)? (Y/n): "
+  ask "Do you wish to install Extras (dotfiles, git, curl, htop, vim)? (Y/n): "
   read -e OPTION_EXTRAS
-  # Check User Input
   if [ "$OPTION_EXTRAS" != "n" ]; then
     # Execute Function
-    installDotfilesVps
+    copyDotfiles
     installUtilities
   fi
 
   # Ask If reboot
-  echo -n "Do you wish to reboot? (Y/n): "
+  ask "Do you wish to reboot? (Y/n): "
   read -e OPTION_REBOOT
-  # Check User Input
   if [ "$OPTION_REBOOT" != "n" ]; then
     # Execute Function
     reboot
@@ -196,41 +221,33 @@ e_header "Bootstrap your VPS\n"
 function menuMacosx {
 
 	# copy dotfiles
-  echo -n "Copy dotfiles? (Y/n): "
+  ask "Should I copy the dotfiles? (Y/n): "
   read -e COPY_DOTFILES
-  # Check User Input
   if [ "$COPY_DOTFILES" != "n" ]; then
-    # Execute Function
-			copyDotfile .bashrc
-			copyDotfile .bash_prompt
-			copyDotfile .bash_profile
-			copyDotfile .bash_path
-			copyDotfile .bash_aliases
-			copyDotfile .inputrc
-			copyDotfile .vimrc
-			copyDotfile .tmux.conf
-			copyDotfile .gitconfig
+    	copyDotfiles
   fi
 
 	# Install homebrew if it isn't installed already
-	# Check for Homebrew,
-	# Install if we don't have it
-	if test ! $(which brew); then
-	  echo "Installing homebrew..."
-	  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	ask "Should I install homebrew? (Y/n): "
+  read -e INSTALL_BREW
+  if [ "${INSTALL_BREW}" != "n" ]; then
+		if test ! $(which brew); then
+		  e_arrow "Installing homebrew..."
+		  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		else
+			e_success "Homebrew already installed"
+		fi
 	fi
 
+	# Run Brew doctor before anything else
+  echo ""
+	e_arrow "Starting brew doctor to make sure everything's ok"
+  brew doctor || true
+
 	# Update homebrew recipes
+  echo ""
+	e_arrow "Updating brew"
 	brew update
-
-	# Install GNU core utilities (those that come with OS X are outdated)
-	brew install coreutils
-
-	# Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-	brew install findutils
-
-	# Install Bash 4
-	brew install bash
 
 	# Install more recent versions of some OS X tools
 	brew tap homebrew/dupes
@@ -238,61 +255,33 @@ function menuMacosx {
 
 	# add path of coreutils in $PATH
 	echo "export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH" >> ~/.bash_path
-	binaries=(
-	  graphicsmagick
-	  webkit2png
-	  rename
-	  zopfli
-	  ffmpeg
-	  python
-	  sshfs
-	  trash
-	  node
-	  tree
-	  ack
-	  git
-	  htop
-	  p7zip
-	)
 
-	echo "installing binaries..."
-	brew install ${binaries[@]}
-	brew cleanup
+  echo ""
+	e_arrow "installing binaries..."
+	cat "${__DIR__}/brew-binaries.txt" | xargs brew install
 
-	brew tap caskroom/versions
+  echo ""
+  e_arrow "Cleaning up Homebrew intallation..."
+  brew cleanup
 
 
-	# Apps
-	apps=(
-	  alfred
-	  dropbox
-	  google-chrome
-	  firefox
-	  qlcolorcode
-	  qlmarkdown
-	  quicklook-json
-	  qlstephen
-	  transmit
-	  appcleaner
-	  spotify
-	  virtualbox
-	  vagrant
-	  iterm2
-	  sublime-text3
-	  flux
-	  vlc
-	  skype
-	)
+  echo ""
+  e_arrow "Installing Caskroom, Caskroom versions and Caskroom Fonts..."
+  brew install caskroom/cask/brew-cask
+  brew tap caskroom/versions
+
+  # Make /Applications the default location of apps
+  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 	# Install apps to /Applications
 	# Default is: /Users/$user/Applications
-	echo "installing apps..."
-	brew cask install --appdir="/Applications" ${apps[@]}
+	e_arrow "installing apps..."
+	cat "${__DIR__}/brew-apps.txt" | xargs brew cask install
 
 	
 }
 
-function installDotfilesVps {
+copyDotfiles() {
 	copyDotfile .bashrc
 	copyDotfile .bash_prompt
 	copyDotfile .bash_profile
@@ -302,30 +291,6 @@ function installDotfilesVps {
 	copyDotfile .vimrc
 	copyDotfile .tmux.conf
 	copyDotfile .gitconfig
-		
-}
-
-
-# clone the repository and symlink the dotfiles in $HOME
-function cloneDotfiles {
-	if git --version &> /dev/null ; then
-		e_success "GIT already installed"
-	else
-		installPackage git-core
-	fi
-	git clone https://github.com/NicolasRitouet/dotfiles.git ~/.dotfiles
-	cd ~/.dotfiles
-	# add symlink for every dotfile
-
-	symlinkDotfile .bashrc
-	symlinkDotfile .bash_prompt
-	symlinkDotfile .bash_profile
-	symlinkDotfile .bash_path
-	symlinkDotfile .bash_aliases
-	symlinkDotfile .inputrc
-	symlinkDotfile .vimrc
-	symlinkDotfile .tmux.conf
-	symlinkDotfile .gitconfig
 }
 
 
@@ -354,17 +319,7 @@ installNodeJsYeoman() {
 	curl https://npmjs.org/install.sh | sh
 	npm config set prefix $HOME/.node_modules
 	echo "\n\nexport PATH=~/.node_modules/bin:$PATH" >> ~/.bash_path
-	
-	# Install yeoman
-	# e_arrow "Installing Yeoman"
-	# npm install -g yo
-	# and the angular generator
-	# npm install -g generator-angular
 
-	# Install Ruby
-	#e_arrow "Install Ruby..."
-	#/usr/bin/curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby
-	#e_success "Ruby Installed (or not)..."	
 }
 
 # Install Utilities Defined In File "extra"
@@ -374,17 +329,15 @@ installUtilities() {
 	# Loop Through Package List
 	while read package; do
 		# Install Currently Selected Package
-		installPackage "$package"
-	done < devTools
+		installPackage "${package}"
+	done < linux-binaries.txt
 	# Clean Cached Packages
 	sudo apt-get clean
 }
 
 
-installJava() {
-
-
-	# Install java  oracle
+installJava7() {
+	# Install java oracle
 	e_arrow "Install Java 7 from webupd8team..."
 	# if add-apt-repository > ??, then, add argument -y
 	sudo add-apt-repository ppa:webupd8team/java
@@ -406,50 +359,9 @@ installJava() {
 	fi
 }
 
-installMaven() {
-
-
-	e_arrow "Install maven 3.1.1 from binary..."
-	wget http://mirror3.layerjet.com/apache/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz
-	tar xzf apache-maven-3.1.1-bin.tar.gz
-	sudo mv apache-maven-3.1.1 /usr/local
-	sudo ln -s /usr/local/apache-maven-3.1.1 /usr/local/maven
-
-	e_arrow "Registering Maven Path..."
-	export M2_HOME=/usr/local/maven
-	export M2=$M2_HOME/bin
-	export PATH=$M2:$PATH
-
-	e_arrow "Install path in bash_path ..."
-	echo -e "M2_HOME=/usr/local/maven" >> ~/.bash_path
-	echo -e "M2=$M2_HOME/bin" >> ~/.bash_path
-	echo -e "PATH=$M2:$PATH" >> ~/.bash_path
-}
-
-installPlay() {
-	
-	e_arrow "Install Play! Framework 2.2.0..."
-	wget http://downloads.typesafe.com/play/2.2.0/play-2.2.0.zip
-	unzip play-2.2.0.zip
-	sudo mv play-2.2.0 /opt
-	sudo ln -s /opt/play-2.2.0 /opt/play
-	sudo ln -s /opt/play/play /usr/local/bin/play
-	
-}
-
-
-updateAndUpgrade() {
-	e_arrow "Updating ..."
-    	sudo apt-get update > /dev/null
-	e_success "apt-get update" "successful"
-	e_arrow "Upgrading ..."
-	sudo apt-get upgrade -y > /dev/null
-	e_success "apt-get upgrade" "successful"
-}
-
 
 # Add User Account
-function add_user {
+add_user() {
 	e_arrow "Add: User Account"
 	# Take User Input
 	ask "Please enter a user name: "
@@ -468,7 +380,7 @@ function add_user {
 }
 
 # Disable Root SSH Login
-function disable_sshroot {
+disable_sshroot() {
 	e_arrow "Disabling Root SSH Login"
 	e_arrow "BE SURE TO CREATE A NEW USER BEFORE"
 	# Disable Root SSH Login For OpenSSH
@@ -484,7 +396,7 @@ function disable_sshroot {
     # sed -i 's/DROPBEAR_EXTRA_ARGS="/DROPBEAR_EXTRA_ARGS="-w/g' /etc/default/dropbear
 }
 
-function change_ssh_port {
+change_ssh_port() {
 	e_arrow "Change SSH port"
 	sed -i "s/Port 22/Port 2706/g" /etc/ssh/sshd_config
 
@@ -492,6 +404,7 @@ function change_ssh_port {
 
 # Copy a dotfile to the home directory of the current user
 copyDotfile() {
+	# http://mpov.timmorgan.org/use-rsync-instead-of-cp/
 	e_arrow "Copy $1 into ${HOME}"
 	if [ -f ${HOME}/$1 ]; then
 		cp ${HOME}/$1 ${HOME}/$1.backup
@@ -503,18 +416,6 @@ copyDotfile() {
 		e_error "Copy of $1" "FAIL"
 	else
 		e_success "Copy of $1" "Successful!"
-	fi
-}
-
-# Symlink a dotfile to the home directory of the current user
-symlinkDotfile() {
-	e_arrow "Linking $1 into ${HOME}"
-	ln -s $1 ${HOME}/$1
-	if [ $? -gt 0 ]	# What did last command return ?
-	then
-		e_error "Symlink of $1" "FAIL"
-	else
-		e_success "Symlink of $1" "Successful!"
 	fi
 }
 

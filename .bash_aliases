@@ -139,5 +139,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Http server
     alias servethis="python -c 'import SimpleHTTPServer; SimpleHTTPServer.test()'"
 
+    save_brew () {
+        brew leaves > ~/brew_leaves.txt
+        brew cask list > ~/brew_cask_list.txt
+    }
+    alias save_brew=save_brew
+
 
 fi

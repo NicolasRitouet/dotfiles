@@ -1,0 +1,17 @@
+coreutils
+findutils
+bash
+graphicsmagick
+webkit2png
+rename
+zopfli
+ffmpeg
+python
+sshfs
+trash
+node
+tree
+ack
+git
+htop
+p7zip

@@ -1,0 +1,17 @@
+alfred
+dropbox
+google-chrome
+firefox
+qlcolorcode
+qlmarkdown
+quicklook-json
+qlstephen
+transmit
+appcleaner
+spotify
+virtualbox
+vagrant
+sublime-text3
+flux
+vlc
+skype

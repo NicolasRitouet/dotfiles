@@ -9,4 +9,5 @@ htop
 unrar
 unzip
 zip
+p7zip
 tmux
