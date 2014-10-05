@@ -17,7 +17,7 @@
 ###########################################################################
 
 # Import some utility functions
-source ./utility.sh
+source ./utility.sh 
 
 
 # Get a random number to display randomly the headers
@@ -144,7 +144,7 @@ menuDev() {
 	ask "Developer Box: please enter your choice:"
 	options=("Copy dotfiles (.bashrc, .bash_aliases, .gitconfig, .vimrc, .tmux.conf, .bash_prompt, etc...)" #1
 		"@(sudo) Install utilities (git-core, vim, mtr, bwm-ng, curl, htop, unrar, unzip, zip, tmux)" #2
-		"Install NodeJS and NPM (without sudo) and yeoman" #3
+		"Install NodeJS and NPM (without sudo)" #3
 		"@(sudo) Install Java 7" #4
 	)
 	select opt in "${options[@]}"  "Quit"; do
@@ -258,7 +258,7 @@ function menuMacosx {
 
   echo ""
 	e_arrow "installing binaries..."
-	cat "${__DIR__}/brew-binaries.txt" | xargs brew install
+	cat "${__DIR__}/resources/brew-binaries.txt" | xargs brew install
 
   echo ""
   e_arrow "Cleaning up Homebrew intallation..."
@@ -266,7 +266,7 @@ function menuMacosx {
 
 
   echo ""
-  e_arrow "Installing Caskroom, Caskroom versions and Caskroom Fonts..."
+  e_arrow "Installing Caskroom and Caskroom versions..."
   brew install caskroom/cask/brew-cask
   brew tap caskroom/versions
 
@@ -276,7 +276,9 @@ function menuMacosx {
 	# Install apps to /Applications
 	# Default is: /Users/$user/Applications
 	e_arrow "installing apps..."
-	cat "${__DIR__}/brew-apps.txt" | xargs brew cask install
+	cat "${__DIR__}/resources/brew-apps.txt" | xargs brew cask install
+
+	e_success "everything Successfuly installed"
 
 	
 }
@@ -330,7 +332,7 @@ installUtilities() {
 	while read package; do
 		# Install Currently Selected Package
 		installPackage "${package}"
-	done < linux-binaries.txt
+	done < "${__DIR__}/resources/linux-binaries.txt"
 	# Clean Cached Packages
 	sudo apt-get clean
 }
@@ -374,7 +376,7 @@ add_user() {
 	# Copy dotfiles to the new user and chown them
 	for dotfile in .bashrc .bash_prompt .bash_profile .bash_path .bash_aliases .inputrc .vimrc .gitconfig
 	do
-		cp $dotfile /home/$USERNAME/$dotfile
+		cp "${__DIR__}/dotfiles/${dotfile}" "/home/${USERNAME}/${dotfile}"
 		chown $USERNAME:$USERNAME /home/$USERNAME/$dotfile
 	done
 }
@@ -399,6 +401,7 @@ disable_sshroot() {
 change_ssh_port() {
 	e_arrow "Change SSH port"
 	sed -i "s/Port 22/Port 2706/g" /etc/ssh/sshd_config
+	e_success "SSH port changed in 2706, you should remember this!"
 
 }
 
@@ -410,7 +413,7 @@ copyDotfile() {
 		cp ${HOME}/$1 ${HOME}/$1.backup
 		e_success "$1 file backup as $1.backup"
 	fi
-	cp $1 ${HOME}/$1
+	cp "${__DIR__}/dotfiles/$1" ${HOME}/$1
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
 		e_error "Copy of $1" "FAIL"
@@ -419,7 +422,7 @@ copyDotfile() {
 	fi
 }
 
-# Install package, check if successfull and display fail or success
+# Install package, check if successful and display fail or success
 installPackage() {
 	while [ ${#} -gt 0 ]; do
 		INSTALLED=$(dpkg -l | grep " $1 ") || true
