@@ -1,6 +1,6 @@
 
 set -o pipefail
-set -o errexit
+# set -o errexit # Exit script if command fails
 # set -o xtrace
 
 __DIR__="$(cd "$(dirname "${0}")"; echo $(pwd))"
@@ -9,7 +9,7 @@ __FILE__="${__DIR__}/${__BASE__}"
 
 ARG1="${1:-Undefined}"
 
-# set -o nounset
+# set -o nounset # Treat unset variables as an error
 
 # Use friendly name for colors
 black='\033[0;30m'

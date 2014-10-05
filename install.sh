@@ -302,13 +302,14 @@ installNodeJsYeoman() {
 	
 	e_arrow "Installing NodeJs"
 	# Install nodeJS
-	export PATH=~/local/bin:$PATH
-	echo "\n\nexport PATH=~/local/bin:$PATH" >> ~/.bash_path
-	mkdir ~/local
-	mkdir ~/node-latest-install
-	cd ~/node-latest-install
+	node_modules_path="${HOME}/.node_modules"
+	export PATH=${node_modules_path}/bin:$PATH
+	echo -e "\n\nexport PATH=${node_modules_path}/bin:$PATH" >> ~/.bash_path
+	mkdir -p "${node_modules_path}"
+	mkdir -p "${HOME}/node-latest-install"
+	cd "${HOME}/node-latest-install"
 	curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
-	./configure --prefix=~/local
+	./configure --prefix=${node_modules_path}
 	make install
 	if [ $? -gt 0 ]	# What did last command return ?
 	then
@@ -316,11 +317,8 @@ installNodeJsYeoman() {
 	else
 		e_success "NodeJS install" "Success"
 	fi
-	# Install NPM
-	e_arrow "Installing NPM"
-	curl https://npmjs.org/install.sh | sh
-	npm config set prefix $HOME/.node_modules
-	echo "\n\nexport PATH=~/.node_modules/bin:$PATH" >> ~/.bash_path
+	npm config set prefix "${node_modules_path}"
+	rm -rf "${HOME}/node-latest-install"
 
 }
 

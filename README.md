@@ -33,6 +33,8 @@ This repo contains my precious dotfiles and a bash script to bootstrap a debian-
 
 
 ## Todo
+- fix issue with vimrc on Linux
+- Improve method to update $PATH (find and replace instead of append)
 - Consider using rsync instead of cp (http://mpov.timmorgan.org/use-rsync-instead-of-cp/)
 - Install Xcode command line tools
 - clean bash_prompt
