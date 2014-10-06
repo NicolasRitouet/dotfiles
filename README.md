@@ -10,7 +10,7 @@ This repo contains my precious dotfiles and a bash script to bootstrap a debian-
 
 ## Install on MacOSX
 
-````curl -L http://github.com/NicolasRitouet/dotfiles/archive/master.tar.gz | tar zx --strip 1 && ./install.sh````
+````mkdir .dotfiles && cd $_ && curl -L http://github.com/NicolasRitouet/dotfiles/archive/master.tar.gz | tar zx --strip 1 && ./install.sh````
 
 
 ## What does it do?
