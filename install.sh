@@ -277,6 +277,11 @@ function menuMacosx {
 	# Default is: /Users/$user/Applications
 	e_arrow "installing apps..."
 	cat "${__DIR__}/resources/brew-apps.txt" | xargs brew cask install
+	
+	# Add osx specific command line tools
+	if test ! $(which subl); then
+	  ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" /usr/local/bin/subl
+	fi
 
 	e_success "everything Successfuly installed"
 
