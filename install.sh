@@ -254,7 +254,7 @@ function menuMacosx {
 	brew install homebrew/dupes/grep
 
 	# add path of coreutils in $PATH
-	echo "export PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH" >> ~/.bash_path
+	echo -e "\n\nexport PATH=$(brew --prefix coreutils)/libexec/gnubin:$PATH" >> ~/.bash_path
 
   echo ""
 	e_arrow "installing binaries..."
