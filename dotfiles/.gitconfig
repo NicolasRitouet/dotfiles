@@ -9,6 +9,7 @@
 	last = log --name-status HEAD^..HEAD
 	ps = push origin master
 	pl = pull origin master
+	st = status
 [user]
         name = NicolasRitouet
         email = nicolas@ritouet.com
