@@ -39,3 +39,4 @@ This repo contains my precious dotfiles and a bash script to bootstrap a debian-
 - Install Xcode command line tools
 - clean bash_prompt
 - Rollback if password error while creating a user
+- Get some inspiration from https://github.com/MattiSG/DotFiles/blob/master/machine/osx-defaults.sh
