@@ -9,3 +9,4 @@ ack
 git
 htop
 p7zip
+ansible
