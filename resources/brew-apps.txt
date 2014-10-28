@@ -1,4 +1,3 @@
-alfred
 dropbox
 google-chrome
 firefox
