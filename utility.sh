@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 set -o pipefail
 # set -o errexit # Exit script if command fails
