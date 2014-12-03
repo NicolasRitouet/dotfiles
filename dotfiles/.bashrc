@@ -58,3 +58,6 @@ fi
 #    . ~/.preexec.bash
 #    preexec_install
 #fi
+
+# LibGPG
+export GPG_TTY=$(tty)
