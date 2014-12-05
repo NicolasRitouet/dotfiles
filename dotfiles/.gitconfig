@@ -1,27 +1,37 @@
 [color]
-	ui = auto
+  ui = auto
 [alias]
-	cp = cherry-pick
-	hist = log --oneline --graph --decorate --all
-	yesterday = log --since '1 day ago' --oneline --author nicolas@ritouet.com
-	ac = !git add -A && git commit -m
-	co = checkout
-	last = log --name-status HEAD^..HEAD
-	ps = push origin master
-	pl = pull origin master
-	st = status
-	alias = "!git config -l | grep alias | cut -c 7-"
-	r = reset
-	r1 = reset HEAD^
-	r2 = reset HEAD^^
-	rh = reset --hard
-	rh1 = reset HEAD^ --hard
-	rh2 = reset HEAD^^ --hard
-	grep = grep -Ii
-	gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
-	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-	lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+  cp = cherry-pick
+  hist = log --oneline --graph --decorate --all
+  yesterday = log --since '1 day ago' --oneline --author nicolas@ritouet.com
+  ac = !git add -A && git commit -m
+  co = checkout
+  last = log --name-status HEAD^..HEAD
+  ps = push origin master
+  pl = pull origin master
+  st = status
+  alias = "!git config -l | grep alias | cut -c 7-"
+  r = reset
+  r1 = reset HEAD^
+  r2 = reset HEAD^^
+  rh = reset --hard
+  rh1 = reset HEAD^ --hard
+  rh2 = reset HEAD^^ --hard
+  grep = grep -Ii
+  gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+  lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
 [user]
-        name = NicolasRitouet
-        email = nicolas@ritouet.com
+  name = NicolasRitouet
+  email = nicolas@ritouet.com
+
+[merge]
+  tool = diffmerge
+[mergetool "diffmerge"]
+  cmd = "diffmerge --merge --result=\"$MERGED\" \"$LOCAL\" \"$(if test -f \"$BASE\"; then echo \"$BASE\"; else echo \"$LOCAL\"; fi)\" \"$REMOTE\""
+  trustExitCode = false
+[diff]
+  tool = diffmerge
+[difftool "diffmerge"]
+  cmd = diffmerge \"$LOCAL\" \"$REMOTE\"
