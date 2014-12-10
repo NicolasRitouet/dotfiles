@@ -9,6 +9,7 @@
   last = log --name-status HEAD^..HEAD
   ps = push origin master
   pl = pull origin master
+  plr = pull --rebase origin master
   st = status
   alias = "!git config -l | grep alias | cut -c 7-"
   r = reset
