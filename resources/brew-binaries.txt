@@ -1,11 +1,9 @@
-coreutils
+coreutils # GNU Coreutils contains the most essential UNIX commands, such as ls, cat.
 findutils
-bash
-python
-trash
+bash # Newer bash
+python # Newer python
+trash # Move files from terminal to trash
 node
-tree
-ack
 git
 htop
 p7zip
